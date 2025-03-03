@@ -75,31 +75,13 @@ public class DailyGateSpawner {
             if (shouldSpawnToday) {
                 nextSpawnTick = (120 + random.nextInt(2280)) * 10;
                 spawnPos = null;
-                LOGGER.info("Random gate will be spawned to day at " + nextSpawnTick);
+//                LOGGER.info("Random gate will be spawned to day at " + nextSpawnTick);
             } else {
                 return;
             }
         }
 
         if (!shouldSpawnToday) return;
-
-        if (spawnPos == null) {
-            List<ServerPlayer> players = world.players();
-            if (!players.isEmpty()) {
-                ServerPlayer targetPlayer = players.get(random.nextInt(players.size()));
-                spawnPos = SurfaceSpawnHelper.findRandomSurfacePos(world, targetPlayer.blockPosition(), 50, 300);
-            } else {
-                shouldSpawnToday = false;
-                nextSpawnTick = -1;
-                spawnPos = null;
-                isPromptPlayer = false;
-                return;
-            }
-        } else if (spawnPos.getY() == 0) {
-            if (SurfaceSpawnHelper.isChunkLoaded(world, spawnPos)) {
-                spawnPos = SurfaceSpawnHelper.moveToSurface(world, spawnPos);
-            }
-        }
 
         long remainingTick = nextSpawnTick - dayTime;
 
@@ -117,12 +99,27 @@ public class DailyGateSpawner {
 
         } else if (remainingTick <= 6000) {
             if (!isPromptPlayer) {
-                String clearWaypoint = "waypoint delete " + waypointName + " @a";
+                String clearWaypoint = "waypoint delete \"" + waypointName + "\" @a";
                 try {
                     Objects.requireNonNull(pPlayer.getServer()).getCommands().getDispatcher().execute(clearWaypoint, source);
                 } catch (CommandSyntaxException e) {
                     LOGGER.error("Failed to execute command {}, error {}", clearWaypoint, e);
                 }
+
+                if (spawnPos == null) {
+                    List<ServerPlayer> players = world.players();
+                    if (!players.isEmpty()) {
+                        ServerPlayer targetPlayer = players.get(random.nextInt(players.size()));
+                        spawnPos = SurfaceSpawnHelper.findRandomSurfacePos(world, targetPlayer.blockPosition(), 50, 300);
+                    } else {
+                        shouldSpawnToday = false;
+                        nextSpawnTick = -1;
+                        spawnPos = null;
+                        isPromptPlayer = false;
+                        return;
+                    }
+                }
+
                 List<? extends List<? extends String>> gates = Config.GATES.get();
                 List<? extends String> randomGateData = gates.get(world.random.nextInt(gates.size()));
                 randomGate = randomGateData.get(0);
@@ -131,7 +128,7 @@ public class DailyGateSpawner {
                 subMessage = randomGateData.get(3);
                 waypointName = randomGateData.get(4);
 
-                String addWaypoint = "waypoint create " + waypointName + " minecraft:overworld " + spawnPos.getX() + " " + spawnPos.getY() + " " + spawnPos.getZ() + " " + hexColor + " @a";
+                String addWaypoint = "waypoint create \"" + waypointName + "\" minecraft:overworld " + spawnPos.getX() + " " + spawnPos.getY() + " " + spawnPos.getZ() + " dark_purple @a";
                 try {
                     Objects.requireNonNull(pPlayer.getServer()).getCommands().getDispatcher().execute(addWaypoint, source);
                 } catch (CommandSyntaxException e) {
@@ -140,6 +137,11 @@ public class DailyGateSpawner {
                 isPromptPlayer = true;
             }
             assert spawnPos != null;
+            if (spawnPos.getY() == 0) {
+                if (SurfaceSpawnHelper.isChunkLoaded(world, spawnPos)) {
+                    spawnPos = SurfaceSpawnHelper.moveToSurface(world, spawnPos);
+                }
+            }
             NotificationOverlay.showNotification(mainMessage + " at x: " + spawnPos.getX() + " z: " + spawnPos.getZ() + " in " + (remainingTick / 20) + " seconds! " + subMessage, hexColor);
         }
     }

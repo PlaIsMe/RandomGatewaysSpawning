@@ -42,7 +42,7 @@ public class NotificationOverlay {
         int screenWidth = mc.getWindow().getGuiScaledWidth();
         int screenHeight = mc.getWindow().getGuiScaledHeight();
         int x = (screenWidth - font.width(message)) / 2;
-        int y = screenHeight - 55;
+        int y = screenHeight - 60;
 
         font.draw(poseStack, message, x, y, hexColor);
     }
