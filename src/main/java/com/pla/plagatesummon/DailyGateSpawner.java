@@ -23,15 +23,7 @@ import java.util.Random;
 public class DailyGateSpawner {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Random random = new Random();
-    private static int nextSpawnTick = -1;
-    private static boolean shouldSpawnToday = false;
-    private static BlockPos spawnPos = null;
-    private static boolean isPromptPlayer = false;
-    private static String mainMessage = "";
-    private static int hexColor = 0;
-    private static String randomGate;
-    private static String subMessage = "";
-    private static String waypointName = "";
+    private static final int radius = 5;
 
     @SubscribeEvent
     public static void onServerTick(TickEvent.ServerTickEvent event) {
@@ -42,6 +34,8 @@ public class DailyGateSpawner {
 
         ServerLevel world = server.getLevel(Level.OVERWORLD);
         if (world == null || !world.dimension().equals(Level.OVERWORLD)) return;
+
+        GateSpawnData data = GateSpawnData.get(world);
 
         ServerPlayer pPlayer = world.players().isEmpty() ? null : world.players().get(0);
         if (pPlayer == null) return;
@@ -58,91 +52,124 @@ public class DailyGateSpawner {
                 source.getServer(),
                 source.getEntity()
         );
-        long dayTime = world.getDayTime() % 24000; // Current time in the day
+        long dayTime = world.getDayTime() % 24000;
 
-        // Check if it's a new day (midnight tick)
         if (dayTime == 1) {
-            if (spawnPos != null) {
-                shouldSpawnToday = false;
-                nextSpawnTick = -1;
-                spawnPos = null;
-                if (isPromptPlayer) {
+            if (data.spawnPos != null) {
+                data.shouldSpawnToday = false;
+                data.nextSpawnTick = -1;
+                data.spawnPos = null;
+                if (data.isPromptPlayer) {
                     NotificationOverlay.showNotification("You slept soundly, unaware... The dark forces have faded.", 0xAA00FF);
-                    isPromptPlayer = false;
+                    data.isPromptPlayer = false;
                 }
+                data.setDirty();
+            } else {
+                int chunkX = data.oldSpawnPos.getX() >> 4;
+                int chunkZ = data.oldSpawnPos.getZ() >> 4;
+
+                for (int x = -radius; x <= radius; x++) {
+                    for (int z = -radius; z <= radius; z++) {
+                        world.setChunkForced(chunkX + x, chunkZ + z, false);
+                    }
+                }
+                LOGGER.info("PlaGateSummon: Unforced load chunks from (" + (chunkX - radius) + ", " + (chunkZ - radius) + ") to (" + (chunkX + radius) + ", " + (chunkZ + radius) + ")");
             }
-            shouldSpawnToday = random.nextBoolean(); // 50% chance
-            if (shouldSpawnToday) {
-                nextSpawnTick = (120 + random.nextInt(2280)) * 10;
-                spawnPos = null;
-//                LOGGER.info("Random gate will be spawned to day at " + nextSpawnTick);
+            data.shouldSpawnToday = random.nextBoolean(); // 50% chance
+            if (data.shouldSpawnToday) {
+                data.nextSpawnTick = (120 + random.nextInt(2280)) * 10;
+                data.spawnPos = null;
+                LOGGER.info("PlaGateSummon: Random gate will be spawned to day at " + data.nextSpawnTick);
             } else {
                 return;
             }
+            data.setDirty();
         }
 
-        if (!shouldSpawnToday) return;
+        if (!data.shouldSpawnToday) return;
 
-        long remainingTick = nextSpawnTick - dayTime;
+        long remainingTick = data.nextSpawnTick - dayTime;
 
-        if (remainingTick <= 0 && spawnPos != null) {
-            String summonCommand = "open_gateway " + spawnPos.getX() + " " + spawnPos.getY() + " " + spawnPos.getZ() + " " + randomGate;
+        if (remainingTick <= 0 && data.spawnPos != null) {
+            if (data.spawnPos.getY() == 0) {
+                if (SurfaceSpawnHelper.isChunkLoaded(world, data.spawnPos)) {
+                    data.spawnPos = SurfaceSpawnHelper.moveToSurface(world, data.spawnPos);
+                    data.setDirty();
+                    return;
+                }
+            }
+            String summonCommand = "open_gateway " + data.spawnPos.getX() + " " + data.spawnPos.getY() + " " + data.spawnPos.getZ() + " " + data.randomGate;
+            int chunkX = data.spawnPos.getX() >> 4;
+            int chunkZ = data.spawnPos.getZ() >> 4;
+
+            for (int x = -radius; x <= radius; x++) {
+                for (int z = -radius; z <= radius; z++) {
+                    world.setChunkForced(chunkX + x, chunkZ + z, true);
+                }
+            }
+            LOGGER.info("PlaGateSummon: Forced load chunks from (" + (chunkX - radius) + ", " + (chunkZ - radius) + ") to (" + (chunkX + radius) + ", " + (chunkZ + radius) + ")");
             try {
                 Objects.requireNonNull(pPlayer.getServer()).getCommands().getDispatcher().execute(summonCommand, source);
             } catch (CommandSyntaxException e) {
                 LOGGER.error("Failed to execute command {}, error {}", summonCommand, e);
             }
-            shouldSpawnToday = false;
-            nextSpawnTick = -1;
-            spawnPos = null;
-            isPromptPlayer = false;
-
+            data.shouldSpawnToday = false;
+            data.nextSpawnTick = -1;
+            data.oldSpawnPos = data.spawnPos;
+            data.spawnPos = null;
+            data.isPromptPlayer = false;
+            data.setDirty();
         } else if (remainingTick <= 6000) {
-            if (!isPromptPlayer) {
-                String clearWaypoint = "waypoint delete \"" + waypointName + "\" @a";
+            if (!data.isPromptPlayer) {
+                String clearWaypoint = "waypoint delete \"" + data.waypointName + "\" @a";
                 try {
                     Objects.requireNonNull(pPlayer.getServer()).getCommands().getDispatcher().execute(clearWaypoint, source);
                 } catch (CommandSyntaxException e) {
                     LOGGER.error("Failed to execute command {}, error {}", clearWaypoint, e);
                 }
 
-                if (spawnPos == null) {
+                if (data.spawnPos == null) {
                     List<ServerPlayer> players = world.players();
                     if (!players.isEmpty()) {
                         ServerPlayer targetPlayer = players.get(random.nextInt(players.size()));
-                        spawnPos = SurfaceSpawnHelper.findRandomSurfacePos(world, targetPlayer.blockPosition(), 50, 300);
+                        data.spawnPos = SurfaceSpawnHelper.findRandomSurfacePos(world, targetPlayer.blockPosition(), 50, 300);
+                        data.setDirty();
                     } else {
-                        shouldSpawnToday = false;
-                        nextSpawnTick = -1;
-                        spawnPos = null;
-                        isPromptPlayer = false;
+                        data.shouldSpawnToday = false;
+                        data.nextSpawnTick = -1;
+                        data.spawnPos = null;
+                        data.isPromptPlayer = false;
+                        data.setDirty();
                         return;
                     }
                 }
 
                 List<? extends List<? extends String>> gates = Config.GATES.get();
                 List<? extends String> randomGateData = gates.get(world.random.nextInt(gates.size()));
-                randomGate = randomGateData.get(0);
-                hexColor = (0xFF << 24) | Integer.parseInt(randomGateData.get(1).substring(1), 16);
-                mainMessage = randomGateData.get(2);
-                subMessage = randomGateData.get(3);
-                waypointName = randomGateData.get(4);
+                data.randomGate = randomGateData.get(0);
+                data.hexColor = (0xFF << 24) | Integer.parseInt(randomGateData.get(1).substring(1), 16);
+                data.mainMessage = randomGateData.get(2);
+                data.subMessage = randomGateData.get(3);
+                data.waypointName = randomGateData.get(4);
+                data.setDirty();
 
-                String addWaypoint = "waypoint create \"" + waypointName + "\" minecraft:overworld " + spawnPos.getX() + " " + spawnPos.getY() + " " + spawnPos.getZ() + " dark_purple @a";
+                String addWaypoint = "waypoint create \"" + data.waypointName + "\" minecraft:overworld " + data.spawnPos.getX() + " " + data.spawnPos.getY() + " " + data.spawnPos.getZ() + " dark_purple @a";
                 try {
                     Objects.requireNonNull(pPlayer.getServer()).getCommands().getDispatcher().execute(addWaypoint, source);
                 } catch (CommandSyntaxException e) {
                     LOGGER.error("Failed to execute command {}, error {}", addWaypoint, e);
                 }
-                isPromptPlayer = true;
+                data.isPromptPlayer = true;
+                data.setDirty();
             }
-            assert spawnPos != null;
-            if (spawnPos.getY() == 0) {
-                if (SurfaceSpawnHelper.isChunkLoaded(world, spawnPos)) {
-                    spawnPos = SurfaceSpawnHelper.moveToSurface(world, spawnPos);
+            assert data.spawnPos != null;
+            if (data.spawnPos.getY() == 0) {
+                if (SurfaceSpawnHelper.isChunkLoaded(world, data.spawnPos)) {
+                    data.spawnPos = SurfaceSpawnHelper.moveToSurface(world, data.spawnPos);
+                    data.setDirty();
                 }
             }
-            NotificationOverlay.showNotification(mainMessage + " at x: " + spawnPos.getX() + " z: " + spawnPos.getZ() + " in " + (remainingTick / 20) + " seconds! " + subMessage, hexColor);
+            NotificationOverlay.showNotification(data.mainMessage + " at x: " + data.spawnPos.getX() + " z: " + data.spawnPos.getZ() + " in " + (remainingTick / 20) + " seconds! " + data.subMessage, data.hexColor);
         }
     }
 }
