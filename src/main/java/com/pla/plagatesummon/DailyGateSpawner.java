@@ -52,6 +52,8 @@ public class DailyGateSpawner {
                 source.getServer(),
                 source.getEntity()
         );
+
+        boolean debug_mode = Config.DEBUG_MODE.get();
         long dayTime = world.getDayTime() % 24000;
 
         if (dayTime == 1) {
@@ -64,7 +66,7 @@ public class DailyGateSpawner {
                     data.isPromptPlayer = false;
                 }
                 data.setDirty();
-            } else {
+            } else if (data.oldSpawnPos != null) {
                 int chunkX = data.oldSpawnPos.getX() >> 4;
                 int chunkZ = data.oldSpawnPos.getZ() >> 4;
 
@@ -73,13 +75,15 @@ public class DailyGateSpawner {
                         world.setChunkForced(chunkX + x, chunkZ + z, false);
                     }
                 }
-                LOGGER.info("PlaGateSummon: Unforced load chunks from (" + (chunkX - radius) + ", " + (chunkZ - radius) + ") to (" + (chunkX + radius) + ", " + (chunkZ + radius) + ")");
+                if (debug_mode) LOGGER.info("PlaGateSummon: Unforced load chunks from (" + (chunkX - radius) + ", " + (chunkZ - radius) + ") to (" + (chunkX + radius) + ", " + (chunkZ + radius) + ")");
+                data.oldSpawnPos = null;
+                data.setDirty();
             }
             data.shouldSpawnToday = random.nextBoolean(); // 50% chance
             if (data.shouldSpawnToday) {
                 data.nextSpawnTick = (120 + random.nextInt(2280)) * 10;
                 data.spawnPos = null;
-                LOGGER.info("PlaGateSummon: Random gate will be spawned to day at " + data.nextSpawnTick);
+                if (debug_mode) LOGGER.info("PlaGateSummon: Random gate will be spawned to day at " + data.nextSpawnTick);
             } else {
                 return;
             }
@@ -99,6 +103,7 @@ public class DailyGateSpawner {
                 }
             }
             String summonCommand = "open_gateway " + data.spawnPos.getX() + " " + data.spawnPos.getY() + " " + data.spawnPos.getZ() + " " + data.randomGate;
+
             int chunkX = data.spawnPos.getX() >> 4;
             int chunkZ = data.spawnPos.getZ() >> 4;
 
@@ -107,7 +112,7 @@ public class DailyGateSpawner {
                     world.setChunkForced(chunkX + x, chunkZ + z, true);
                 }
             }
-            LOGGER.info("PlaGateSummon: Forced load chunks from (" + (chunkX - radius) + ", " + (chunkZ - radius) + ") to (" + (chunkX + radius) + ", " + (chunkZ + radius) + ")");
+            if (debug_mode) LOGGER.info("PlaGateSummon: Forced load chunks from (" + (chunkX - radius) + ", " + (chunkZ - radius) + ") to (" + (chunkX + radius) + ", " + (chunkZ + radius) + ")");
             try {
                 Objects.requireNonNull(pPlayer.getServer()).getCommands().getDispatcher().execute(summonCommand, source);
             } catch (CommandSyntaxException e) {

@@ -9,8 +9,10 @@ public class Config {
     public static final ForgeConfigSpec SPEC;
 
     public static ForgeConfigSpec.ConfigValue<List<? extends List<? extends String>>> GATES;
+    public static ForgeConfigSpec.ConfigValue<Boolean> DEBUG_MODE;
 
     static {
+        DEBUG_MODE = BUILDER.comment("Turn on debug mode").define("debug_mode", false);
         GATES = BUILDER.comment("A list of gates to be spawned with attributes")
                 .defineList("gates", List.of(
                         List.of("pla:apotheosis_gate", "#FF4500", "A powerful force stirs… A Boss Gate will be opened", "Beyond lies an ancient being of immense power. Enter if you dare—but be ready to face your doom!", "Apotheosis Boss Gate"),
