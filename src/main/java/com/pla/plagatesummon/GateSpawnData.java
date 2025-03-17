@@ -5,6 +5,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
 
+import java.util.UUID;
+
 public class GateSpawnData extends SavedData {
     private static final String DATA_NAME = "gate_spawn_data";
 
@@ -18,6 +20,7 @@ public class GateSpawnData extends SavedData {
     public String randomGate = "";
     public String subMessage = "";
     public String waypointName = "";
+    public boolean skippedToday = false;
 
     public static GateSpawnData load(CompoundTag nbt) {
         GateSpawnData data = new GateSpawnData();
@@ -37,6 +40,7 @@ public class GateSpawnData extends SavedData {
         data.randomGate = nbt.getString("RandomGate");
         data.subMessage = nbt.getString("SubMessage");
         data.waypointName = nbt.getString("WaypointName");
+        data.skippedToday = nbt.getBoolean("SkippedToday");
         return data;
     }
 
@@ -56,6 +60,7 @@ public class GateSpawnData extends SavedData {
         nbt.putString("RandomGate", randomGate);
         nbt.putString("SubMessage", subMessage);
         nbt.putString("WaypointName", waypointName);
+        nbt.putBoolean("SkippedToday", skippedToday);
         return nbt;
     }
 

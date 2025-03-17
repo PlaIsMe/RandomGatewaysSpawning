@@ -12,7 +12,7 @@ public class Config {
     public static ForgeConfigSpec.ConfigValue<Boolean> DEBUG_MODE;
 
     static {
-        DEBUG_MODE = BUILDER.comment("Turn on debug mode").define("debug_mode", false);
+        DEBUG_MODE = BUILDER.comment("Turn on debug mode").define("debug_mode", true);
         GATES = BUILDER.comment("A list of gates to be spawned with attributes")
                 .defineList("gates", List.of(
                         List.of("pla:apotheosis_gate", "#FF4500", "A powerful force stirs… A Boss Gate will be opened", "Beyond lies an ancient being of immense power. Enter if you dare—but be ready to face your doom!", "Apotheosis Boss Gate"),
@@ -24,7 +24,7 @@ public class Config {
                         List.of("pla:dread_gate", "#71955B", "The Dread Army will rise and sweep across the world", "Their wrath will leave nothing but ruin in its wake. Stand and fight, or succumb to the darkness!", "Dread Gate"),
                         List.of("pla:drowned_gate", "#00FFFF", "The Drowned Boss will emerge from the abyss", "Its cursed tide will drag the unprepared to a watery grave. Beware the call of the deep!", "Drowned Gate"),
                         List.of("pla:end_gate", "#CC00FA", "Ender pearl party will begin", "Will you join?", "End Gate"),
-                        List.of("pla:ent_gate", "#228B22", "Ancient nature will awaken", "The forest will rise, and its guardians will walk once more. Will you stand with nature or be crushed beneath its roots?", "Natural Gate"),
+                        List.of("pla:cursed_armor_gate", "#228B22", "The armors shall awaken", "They seek vengeance for the broken ones you once wore. Can you stand against them?", "Cursed Armor Gate"),
                         List.of("pla:entity_303_gate", "#FFFFFF", "A forbidden force will emerge", "Shadows will spread, and corruption will consume all. Will you face the unknown or flee into the darkness?", "Entity 303 Gate"),
                         List.of("pla:explosion_gate_1", "#83DE71", "The TNT party will begin", "Will you join the chaos or be caught in the blast", "Creeper Gate"),
                         List.of("pla:explosion_gate_2", "#83DE71", "The TNT party will begin", "Will you join the chaos or be caught in the blast", "Creeper Gate"),

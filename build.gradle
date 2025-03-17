@@ -145,6 +145,11 @@ repositories {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.18.2-40.2.21'
+    implementation fg.deobf("curse.maven:ftbchunks-314906:5423717")
+    implementation fg.deobf("curse.maven:ftblibrary-404465:4396792")
+    implementation fg.deobf("curse.maven:ftbteams-404468:4579981")
+    implementation fg.deobf("curse.maven:ftbranks-314905:4167384")
+    implementation fg.deobf("curse.maven:architectury-419699:4521465")
 }
 
 // Example for how to get properties into the manifest for reading at runtime.

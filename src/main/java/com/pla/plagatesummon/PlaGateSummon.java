@@ -28,6 +28,7 @@ public class PlaGateSummon
         modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(DailyGateSpawner.class);
+        MinecraftForge.EVENT_BUS.register(SleepPreventionHandler.class);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC, "plagatesummon-common.toml");
     }
 
