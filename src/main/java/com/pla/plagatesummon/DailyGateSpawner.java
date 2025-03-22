@@ -111,8 +111,15 @@ public class DailyGateSpawner {
             data.setDirty();
         } else if (remainingTick <= 6000) {
             if (!data.isPromptPlayer) {
+                String clearWaypoint = "waypoint delete \"" + data.waypointName + "\" @a";
+                try {
+                    Objects.requireNonNull(pPlayer.getServer()).getCommands().getDispatcher().execute(clearWaypoint, source);
+                } catch (CommandSyntaxException e) {
+                    LOGGER.error("Failed to execute command {}, error {}", clearWaypoint, e);
+                }
+
                 if (data.oldSpawnPos != null) {
-                    removeWaypoint(data.oldSpawnPos);
+                    removeWaypoint(data.oldSpawnPos, data.waypointName, data.hexColor);
                     if (debug_mode) LOGGER.info("PlaGateSummon: Removed waypoint: {}", data.waypointName);
 
                     ClaimChunkHelper claimChunkHelper = ClaimChunkHelper.getInstance(server);
@@ -155,6 +162,12 @@ public class DailyGateSpawner {
                 data.setDirty();
 
                 createWaypoint(data.spawnPos, data.waypointName, data.hexColor);
+                String addWaypoint = "waypoint create \"" + data.waypointName + "\" minecraft:overworld " + data.spawnPos.getX() + " " + data.spawnPos.getY() + " " + data.spawnPos.getZ() + " dark_purple @a";
+                try {
+                    Objects.requireNonNull(pPlayer.getServer()).getCommands().getDispatcher().execute(addWaypoint, source);
+                } catch (CommandSyntaxException e) {
+                    LOGGER.error("Failed to execute command {}, error {}", addWaypoint, e);
+                }
                 data.isPromptPlayer = true;
                 data.setDirty();
             }

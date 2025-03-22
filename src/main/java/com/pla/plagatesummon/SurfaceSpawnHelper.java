@@ -12,7 +12,6 @@ public class SurfaceSpawnHelper {
     public static BlockPos findRandomSurfacePos(ServerLevel world, BlockPos playerPos, int minRange, int maxRange) {
         Random random = new Random();
 
-        // Generate a random offset within the range
         int offsetX = minRange + random.nextInt(maxRange - minRange) * (random.nextBoolean() ? 1 : -1);
         int offsetZ = minRange + random.nextInt(maxRange - minRange) * (random.nextBoolean() ? 1 : -1);
 

@@ -1,6 +1,5 @@
 package com.pla.plagatesummon;
 
-import com.mojang.logging.LogUtils;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -13,14 +12,12 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
+import com.mojang.logging.LogUtils;
 
-// The value here should match an entry in the META-INF/mods.toml file
 @Mod(PlaGateSummon.MOD_ID)
 public class PlaGateSummon
 {
-    // Define mod id in a common place for everything to reference
     public static final String MOD_ID = "plagatesummon";
-    // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public PlaGateSummon() {
@@ -35,7 +32,6 @@ public class PlaGateSummon
     private void commonSetup(final FMLCommonSetupEvent event) {
     }
 
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
     }

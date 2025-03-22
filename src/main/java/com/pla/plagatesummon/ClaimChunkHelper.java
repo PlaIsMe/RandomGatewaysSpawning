@@ -41,6 +41,7 @@ public class ClaimChunkHelper {
 
         ClaimedChunk claimedChunk = new ClaimedChunk(teamData, chunkDimPos);
         claimedChunk.setClaimedTime(System.currentTimeMillis());
+        claimedChunk.setForceLoadedTime(System.currentTimeMillis());
         claimedChunkManager.registerClaim(chunkDimPos, claimedChunk);
         claimedChunk.sendUpdateToAll();
     }

@@ -1,13 +1,17 @@
 package com.pla.plagatesummon;
 
 import dev.ftb.mods.ftbchunks.client.map.MapDimension;
-import dev.ftb.mods.ftbchunks.client.map.Waypoint;
 import dev.ftb.mods.ftbchunks.client.map.WaypointManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
+import org.slf4j.Logger;
+import com.mojang.logging.LogUtils;
+
 
 public class WaypointHelper {
+    private static final Logger LOGGER = LogUtils.getLogger();
+
     public static void createWaypoint(BlockPos pos, String name, int hexColor) {
         MapDimension dimension = MapDimension.getCurrent();
         assert dimension != null;
@@ -22,14 +26,20 @@ public class WaypointHelper {
         waypointManager.add(waypoint);
     }
 
-    public static void removeWaypoint(BlockPos pos) {
+    public static void removeWaypoint(BlockPos pos, String name, int hexColor) {
         MapDimension dimension = MapDimension.getCurrent();
         assert dimension != null;
         if (!dimension.dimension.equals(Level.OVERWORLD)) {
             return;
         }
+
         WaypointManager waypointManager = dimension.getWaypointManager();
-        Waypoint waypoint = new Waypoint(dimension, pos.getX(), pos.getY(), pos.getZ());
-        waypointManager.remove(waypoint);
+
+        boolean removed = waypointManager.removeIf(waypoint -> waypoint.name.equals(name));
+        if (removed) {
+            LOGGER.info("PlaGateSummon: Removed waypoint with name: {}, hexColor: {}", name, hexColor);
+        } else {
+            LOGGER.warn("PlaGateSummon: No matching waypoint found for name: {}, hexColor: {}", name, hexColor);
+        }
     }
 }

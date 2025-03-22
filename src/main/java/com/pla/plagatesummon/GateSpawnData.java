@@ -28,11 +28,23 @@ public class GateSpawnData extends SavedData {
         data.shouldSpawnToday = nbt.getBoolean("ShouldSpawnToday");
         if (nbt.contains("SpawnPos")) {
             int[] pos = nbt.getIntArray("SpawnPos");
-            data.spawnPos = new BlockPos(pos[0], pos[1], pos[2]);
+            if (pos.length == 3) {
+                data.spawnPos = new BlockPos(pos[0], pos[1], pos[2]);
+            } else {
+                data.spawnPos = null;
+            }
+        } else {
+            data.spawnPos = null;
         }
         if (nbt.contains("OldSpawnPos")) {
             int[] pos = nbt.getIntArray("OldSpawnPos");
-            data.spawnPos = new BlockPos(pos[0], pos[1], pos[2]);
+            if (pos.length == 3) {
+                data.oldSpawnPos = new BlockPos(pos[0], pos[1], pos[2]);
+            } else {
+                data.oldSpawnPos = null;
+            }
+        } else {
+            data.oldSpawnPos = null;
         }
         data.isPromptPlayer = nbt.getBoolean("IsPromptPlayer");
         data.mainMessage = nbt.getString("MainMessage");
