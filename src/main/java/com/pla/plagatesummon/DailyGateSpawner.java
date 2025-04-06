@@ -33,6 +33,16 @@ public class DailyGateSpawner {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Random random = new Random();
 
+    static void resetValue(GateSpawnData data, boolean skippedDay) {
+        data.shouldSpawnToday = false;
+        data.nextSpawnTick = -1;
+        data.oldSpawnPos = data.spawnPos;
+        data.spawnPos = null;
+        data.isPromptPlayer = false;
+        data.skippedToday = skippedDay;
+        data.setDirty();
+    }
+
     @SubscribeEvent
     public static void onServerTick(TickEvent.ServerTickEvent event) throws CommandSyntaxException {
         if (event.side != LogicalSide.SERVER || event.phase != TickEvent.Phase.START) return;
@@ -69,17 +79,20 @@ public class DailyGateSpawner {
                 data.skippedToday = false;
                 data.setDirty();
             } else {
-                data.shouldSpawnToday = random.nextBoolean();
-                if (data.shouldSpawnToday) {
-                    data.nextSpawnTick = (120 + random.nextInt(2280)) * 10;
-                    data.spawnPos = null;
-                    server.getPlayerList().broadcastMessage(new TextComponent(ChatFormatting.LIGHT_PURPLE + "The gate will open today… but to where?"), ChatType.CHAT, Util.NIL_UUID);
+                // Gateway failed to spawn due to unloaded chunk == skip the day
+                if (data.spawnPos == null) {
+                    data.shouldSpawnToday = random.nextBoolean();
+                    if (data.shouldSpawnToday) {
+                        data.nextSpawnTick = (120 + random.nextInt(2280)) * 10;
+                        data.spawnPos = null;
+                        server.getPlayerList().broadcastMessage(new TextComponent(ChatFormatting.LIGHT_PURPLE + "The gate will open today… but to where?"), ChatType.CHAT, Util.NIL_UUID);
 
-                    if (debug_mode) LOGGER.info("PlaGateSummon: Random gate will be spawned to day at " + data.nextSpawnTick);
-                } else {
-                    return;
+                        if (debug_mode) LOGGER.info("PlaGateSummon: Random gate will be spawned to day at " + data.nextSpawnTick);
+                    } else {
+                        return;
+                    }
+                    data.setDirty();
                 }
-                data.setDirty();
             }
         }
 
@@ -87,7 +100,10 @@ public class DailyGateSpawner {
 
         long remainingTick = data.nextSpawnTick - dayTime;
 
-        if (remainingTick <= 0 && data.spawnPos != null) {
+        // Cancel the gate attempt to spawn but still not skip the next day
+        if (remainingTick < -6000 && data.spawnPos != null && data.spawnPos.getY() == 0) {
+            resetValue(data, false);
+        } else if (remainingTick <= 0 && data.spawnPos != null) {
             if (data.spawnPos.getY() == 0) {
                 if (SurfaceSpawnHelper.isChunkLoaded(world, data.spawnPos)) {
                     data.spawnPos = SurfaceSpawnHelper.moveToSurface(world, data.spawnPos);
@@ -95,6 +111,10 @@ public class DailyGateSpawner {
                     return;
                 }
             }
+
+            ClaimChunkHelper claimChunkHelper = ClaimChunkHelper.getInstance(server);
+            claimChunkHelper.claimChunk(pPlayer, data.spawnPos);
+
             String summonCommand = "open_gateway " + data.spawnPos.getX() + " " + data.spawnPos.getY() + " " + data.spawnPos.getZ() + " " + data.randomGate;
             try {
                 Objects.requireNonNull(pPlayer.getServer()).getCommands().getDispatcher().execute(summonCommand, source);
@@ -102,13 +122,7 @@ public class DailyGateSpawner {
                 LOGGER.error("Failed to execute command {}, error {}", summonCommand, e);
             }
 
-            data.shouldSpawnToday = false;
-            data.nextSpawnTick = -1;
-            data.oldSpawnPos = data.spawnPos;
-            data.spawnPos = null;
-            data.isPromptPlayer = false;
-            data.skippedToday = true;
-            data.setDirty();
+            resetValue(data, true);
         } else if (remainingTick <= 6000) {
             if (!data.isPromptPlayer) {
                 String clearWaypoint = "waypoint delete \"" + data.waypointName + "\" @a";
@@ -128,28 +142,11 @@ public class DailyGateSpawner {
 
                     data.oldSpawnPos = null;
                     data.setDirty();
-
                 }
 
                 if (data.spawnPos == null) {
-                    List<ServerPlayer> players = world.players();
-                    if (!players.isEmpty()) {
-                        ServerPlayer targetPlayer = players.get(random.nextInt(players.size()));
-                        data.spawnPos = SurfaceSpawnHelper.findRandomSurfacePos(world, targetPlayer.blockPosition(), 50, 300);
-                        data.setDirty();
-
-                        ClaimChunkHelper claimChunkHelper = ClaimChunkHelper.getInstance(server);
-                        claimChunkHelper.claimChunk(targetPlayer, data.spawnPos);
-                        data.oldSpawnPos = data.spawnPos;
-                        data.setDirty();
-                    } else {
-                        data.shouldSpawnToday = false;
-                        data.nextSpawnTick = -1;
-                        data.spawnPos = null;
-                        data.isPromptPlayer = false;
-                        data.setDirty();
-                        return;
-                    }
+                    data.spawnPos = SurfaceSpawnHelper.findRandomSurfacePos(world, pPlayer.blockPosition(), 50, 300);
+                    data.setDirty();
                 }
 
                 List<? extends List<? extends String>> gates = Config.GATES.get();
