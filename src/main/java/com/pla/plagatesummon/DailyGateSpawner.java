@@ -40,6 +40,7 @@ public class DailyGateSpawner {
         data.spawnPos = null;
         data.isPromptPlayer = false;
         data.skippedToday = skippedDay;
+        data.spawnChance = 20;
         data.setDirty();
     }
 
@@ -81,17 +82,22 @@ public class DailyGateSpawner {
             } else {
                 // Gateway failed to spawn due to unloaded chunk == skip the day
                 if (data.spawnPos == null) {
-                    data.shouldSpawnToday = random.nextBoolean();
-                    if (data.shouldSpawnToday) {
+                    int randomPercentage = random.nextInt(100);
+                    if (debug_mode) LOGGER.info("PlaGateSummon: randomPercentage is " + randomPercentage + " the spawnChance is " + data.spawnChance);
+                    if (randomPercentage < data.spawnChance) {
+                        data.shouldSpawnToday = true;
                         data.nextSpawnTick = (120 + random.nextInt(2280)) * 10;
                         data.spawnPos = null;
                         server.getPlayerList().broadcastMessage(new TextComponent(ChatFormatting.LIGHT_PURPLE + "The gate will open today… but to where?"), ChatType.CHAT, Util.NIL_UUID);
-
-                        if (debug_mode) LOGGER.info("PlaGateSummon: Random gate will be spawned to day at " + data.nextSpawnTick);
+                        if (debug_mode) LOGGER.info("PlaGateSummon: Random gate will be spawned today at " + data.nextSpawnTick);
+                        data.setDirty();
                     } else {
+                        data.shouldSpawnToday = false;
+                        data.spawnChance += 20;
+                        data.setDirty();
+                        if (debug_mode) LOGGER.info("PlaGateSummon: No gate will be spawned today");
                         return;
                     }
-                    data.setDirty();
                 }
             }
         }

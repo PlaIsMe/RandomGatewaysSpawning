@@ -21,6 +21,7 @@ public class GateSpawnData extends SavedData {
     public String subMessage = "";
     public String waypointName = "";
     public boolean skippedToday = false;
+    public int spawnChance = 20;
 
     public static GateSpawnData load(CompoundTag nbt) {
         GateSpawnData data = new GateSpawnData();
@@ -53,6 +54,7 @@ public class GateSpawnData extends SavedData {
         data.subMessage = nbt.getString("SubMessage");
         data.waypointName = nbt.getString("WaypointName");
         data.skippedToday = nbt.getBoolean("SkippedToday");
+        data.spawnChance = nbt.getInt("SpawnChance");
         return data;
     }
 
@@ -73,6 +75,7 @@ public class GateSpawnData extends SavedData {
         nbt.putString("SubMessage", subMessage);
         nbt.putString("WaypointName", waypointName);
         nbt.putBoolean("SkippedToday", skippedToday);
+        nbt.putInt("SpawnChance", spawnChance);
         return nbt;
     }
 

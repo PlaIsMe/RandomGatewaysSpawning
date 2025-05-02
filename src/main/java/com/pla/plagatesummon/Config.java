@@ -16,6 +16,9 @@ public class Config {
         GATES = BUILDER.comment("A list of gates to be spawned with attributes")
                 .defineList("gates", List.of(
                         List.of("pla:apotheosis_gate", "#FF4500", "A powerful force stirs… A Boss Gate will be opened", "Beyond lies an ancient being of immense power. Enter if you dare—but be ready to face your doom!", "Apotheosis Boss Gate"),
+                        List.of("pla:apotheosis_gate", "#FF4500", "A powerful force stirs… A Boss Gate will be opened", "Beyond lies an ancient being of immense power. Enter if you dare—but be ready to face your doom!", "Apotheosis Boss Gate"),
+                        List.of("pla:herobrine_gate_1", "#800080", "Dark forces will rise", "Herobrine will collect every soul he meets. Stay in the light, or be lost to the darkness!", "Herobrine Gate"),
+                        List.of("pla:herobrine_gate_2", "#800080", "Dark forces will rise", "Herobrine will collect every soul he meets. Stay in the light, or be lost to the darkness!", "Herobrine Gate"),
                         List.of("pla:bellringer_gate", "#71955B", "The Bellringer will be awakened", "With every toll, the air grows heavier, and your fate draws near. Face it, or be swallowed by the sound of doom!", "Bell Ringer Gate"),
                         List.of("pla:bloodandmadness_gate_1", "#FF0000", "The Blood Boss will emerge", "Its power will grow with every drop spilled. Prepare yourself, or you will be drained dry!", "Blood Gate"),
                         List.of("pla:bloodandmadness_gate_2", "#FF0000", "The Blood Boss will emerge", "Its power will grow with every drop spilled. Prepare yourself, or you will be drained dry!", "Blood Gate"),
@@ -33,15 +36,10 @@ public class Config {
                         List.of("pla:frostmaw_gate", "#71955B", "The Frost Gate will unleash a frozen terror", "Will you endure or be buried in ice", "Frostmaw Gate"),
                         List.of("pla:golem_gate", "#40E0D0", "Golem party will start", "Their unbreakable fists will smash all in their way. Will you stand or be crushed?", "Golem Gate"),
                         List.of("pla:gorgon_gate", "#71955B", "The Gorgon will invade", "Their gaze will turn all to stone. Beware, or be frozen in fear forever!", "Gorgon Gate"),
-                        List.of("pla:herobrine_gate_1", "#800080", "Dark forces will rise", "Herobrine will collect every soul he meets. Stay in the light, or be lost to the darkness!", "Herobrine Gate"),
-                        List.of("pla:herobrine_gate_2", "#800080", "Dark forces will rise", "Herobrine will collect every soul he meets. Stay in the light, or be lost to the darkness!", "Herobrine Gate"),
-                        List.of("pla:herobrine_gate_3", "#800080", "Dark forces will rise", "Herobrine will collect every soul he meets. Stay in the light, or be lost to the darkness!", "Herobrine Gate"),
-                        List.of("pla:herobrine_gate_4", "#800080", "Dark forces will rise", "Herobrine will collect every soul he meets. Stay in the light, or be lost to the darkness!", "Herobrine Gate"),
+                        List.of("pla:apotheosis_gate", "#FF4500", "A powerful force stirs… A Boss Gate will be opened", "Beyond lies an ancient being of immense power. Enter if you dare—but be ready to face your doom!", "Apotheosis Boss Gate"),
+                        List.of("pla:apotheosis_gate", "#FF4500", "A powerful force stirs… A Boss Gate will be opened", "Beyond lies an ancient being of immense power. Enter if you dare—but be ready to face your doom!", "Apotheosis Boss Gate"),
                         List.of("pla:herobrine_gate_5", "#800080", "Dark forces will rise", "Herobrine will collect every soul he meets. Stay in the light, or be lost to the darkness!", "Herobrine Gate"),
                         List.of("pla:herobrine_gate_6", "#800080", "Dark forces will rise", "Herobrine will collect every soul he meets. Stay in the light, or be lost to the darkness!", "Herobrine Gate"),
-                        List.of("pla:herobrine_gate_7", "#800080", "Dark forces will rise", "Herobrine will collect every soul he meets. Stay in the light, or be lost to the darkness!", "Herobrine Gate"),
-                        List.of("pla:herobrine_gate_8", "#800080", "Dark forces will rise", "Herobrine will collect every soul he meets. Stay in the light, or be lost to the darkness!", "Herobrine Gate"),
-                        List.of("pla:herobrine_gate_9", "#800080", "Dark forces will rise", "Herobrine will collect every soul he meets. Stay in the light, or be lost to the darkness!", "Herobrine Gate"),
                         List.of("pla:hydra_gate", "#71955B", "The Hydra will awaken", "Its wounds will heal endlessly—only fire will end its reign. Prepare your flame, or be devoured!", "Hydra Gate"),
                         List.of("pla:ice_dragon_gate", "#ADD8E6", "The Ice Dragon has been sighted!", "Its frost will freeze everything in its path—stay away unless you wish to be turned into an unmelting statue of ice!", "Ice Dragon Gate"),
                         List.of("pla:lightning_dragon_gate", "#800080", "The Lighting Dragon has been sighted!", "Thunder will roar, and its strikes will reduce everything to ash—stay away unless you wish to be shattered by the storm!", "Lighting Dragon Gate"),
@@ -55,6 +53,8 @@ public class Config {
                         List.of("pla:raid_gate_3", "#939999", "The Pillagers will invade the world", " Their war horns will echo, and villages will burn. Will you fight back or fall to their conquest?", "Raid Gate"),
                         List.of("pla:raid_gate_special", "#939999", "The Pillager King will lead his army", "His ruthless forces will raid and conquer all in their path. Will you stand against him or watch the world burn?", "Pillager King Gate"),
                         List.of("pla:samurai_gate", "#71955B", "The Samurai Boss will seek challengers", "He will hunt for a worthy opponent—will you face him in battle or be forgotten in defeat?", "Samurai Gate"),
+                        List.of("pla:herobrine_gate_3", "#800080", "Dark forces will rise", "Herobrine will collect every soul he meets. Stay in the light, or be lost to the darkness!", "Herobrine Gate"),
+                        List.of("pla:herobrine_gate_4", "#800080", "Dark forces will rise", "Herobrine will collect every soul he meets. Stay in the light, or be lost to the darkness!", "Herobrine Gate"),
                         List.of("pla:skeleton_gate_1", "#D3D3D3", "A legion of bones will rise", "Will you fight or join the dead?", "Skeleton Gate"),
                         List.of("pla:skeleton_gate_2", "#D3D3D3", "A legion of bones will rise", "Will you fight or join the dead?", "Skeleton Gate"),
                         List.of("pla:swampjaw_gate", "#71955B", "That is no ordinary fish skeleton... The terrifying Swampjaw will take to the skies", "Stay alert, or become its next meal!", "Swampjaw Gate"),
@@ -62,7 +62,11 @@ public class Config {
                         List.of("pla:void_blossom_gate", "#228B22", "Nature's wrath surges through its vines", "Will you soothe its fury or flee for your life", "Void Blossom Gate"),
                         List.of("pla:zombie_gate_1", "#71955B", "The Undead Party rises, and the night belongs to them", "Will you fight or become their feast", "Zombie Gate"),
                         List.of("pla:zombie_gate_2", "#71955B", "The Undead Party rises, and the night belongs to them", "Will you fight or become their feast", "Zombie Gate"),
-                        List.of("pla:zombie_gate_special", "#71955B", "A zombie in a red shirt has awakened and will lead a legion of the undead", "Will you strike it down, or be consumed by the horde", "Red-Clad Zombie Gate")
+                        List.of("pla:zombie_gate_special", "#71955B", "A zombie in a red shirt has awakened and will lead a legion of the undead", "Will you strike it down, or be consumed by the horde", "Red-Clad Zombie Gate"),
+                        List.of("pla:herobrine_gate_7", "#800080", "Dark forces will rise", "Herobrine will collect every soul he meets. Stay in the light, or be lost to the darkness!", "Herobrine Gate"),
+                        List.of("pla:herobrine_gate_8", "#800080", "Dark forces will rise", "Herobrine will collect every soul he meets. Stay in the light, or be lost to the darkness!", "Herobrine Gate"),
+                        List.of("pla:apotheosis_gate", "#FF4500", "A powerful force stirs… A Boss Gate will be opened", "Beyond lies an ancient being of immense power. Enter if you dare—but be ready to face your doom!", "Apotheosis Boss Gate"),
+                        List.of("pla:apotheosis_gate", "#FF4500", "A powerful force stirs… A Boss Gate will be opened", "Beyond lies an ancient being of immense power. Enter if you dare—but be ready to face your doom!", "Apotheosis Boss Gate")
                 ), obj -> obj instanceof List && ((List<?>) obj).stream().allMatch(e -> e instanceof String));
 
         SPEC = BUILDER.build();
