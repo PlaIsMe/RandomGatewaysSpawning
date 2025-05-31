@@ -10,9 +10,11 @@ public class Config {
 
     public static ForgeConfigSpec.ConfigValue<List<? extends List<? extends String>>> GATES;
     public static ForgeConfigSpec.ConfigValue<Boolean> DEBUG_MODE;
+    public static ForgeConfigSpec.ConfigValue<Boolean> AUTO_CLAIM;
 
     static {
         DEBUG_MODE = BUILDER.comment("Turn on debug mode").define("debug_mode", true);
+        AUTO_CLAIM = BUILDER.comment("Auto claiming chunk").define("auto_claim", true);
         GATES = BUILDER.comment("A list of gates to be spawned with attributes")
                 .defineList("gates", List.of(
                         List.of("pla:apotheosis_gate", "#FF4500", "A powerful force stirs… A Boss Gate will be opened", "Beyond lies an ancient being of immense power. Enter if you dare—but be ready to face your doom!", "Apotheosis Boss Gate"),
@@ -34,8 +36,6 @@ public class Config {
                         List.of("pla:fire_dragon_gate", "#FF4500", "The Fire Dragon has been sighted", "Its flames consume everything in its path—stay away unless you wish to be reduced to nothing but embers!", "Fire Dragon Gate"),
                         List.of("pla:ferrous_gate", "#71955B", "The Ferrous Gate will open", "Stand strong, or be forged into the anvil of war!", "Ferrous Gate"),
                         List.of("pla:frostmaw_gate", "#71955B", "The Frost Gate will unleash a frozen terror", "Will you endure or be buried in ice", "Frostmaw Gate"),
-                        List.of("pla:golem_gate", "#40E0D0", "Golem party will start", "Their unbreakable fists will smash all in their way. Will you stand or be crushed?", "Golem Gate"),
-                        List.of("pla:gorgon_gate", "#71955B", "The Gorgon will invade", "Their gaze will turn all to stone. Beware, or be frozen in fear forever!", "Gorgon Gate"),
                         List.of("pla:apotheosis_gate", "#FF4500", "A powerful force stirs… A Boss Gate will be opened", "Beyond lies an ancient being of immense power. Enter if you dare—but be ready to face your doom!", "Apotheosis Boss Gate"),
                         List.of("pla:apotheosis_gate", "#FF4500", "A powerful force stirs… A Boss Gate will be opened", "Beyond lies an ancient being of immense power. Enter if you dare—but be ready to face your doom!", "Apotheosis Boss Gate"),
                         List.of("pla:herobrine_gate_5", "#800080", "Dark forces will rise", "Herobrine will collect every soul he meets. Stay in the light, or be lost to the darkness!", "Herobrine Gate"),

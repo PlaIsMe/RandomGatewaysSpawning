@@ -28,8 +28,7 @@ public class WaypointHelper {
 
     public static void removeWaypoint(BlockPos pos, String name, int hexColor) {
         MapDimension dimension = MapDimension.getCurrent();
-        assert dimension != null;
-        if (!dimension.dimension.equals(Level.OVERWORLD)) {
+        if (dimension == null || !dimension.dimension.equals(Level.OVERWORLD)) {
             return;
         }
 
