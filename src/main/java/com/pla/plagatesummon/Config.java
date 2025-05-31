@@ -15,7 +15,12 @@ public class Config {
     static {
         DEBUG_MODE = BUILDER.comment("Turn on debug mode").define("debug_mode", true);
         AUTO_CLAIM = BUILDER.comment("Auto claiming chunk").define("auto_claim", true);
-        GATES = BUILDER.comment("A list of gates to be spawned with attributes")
+        GATES = BUILDER.comment(
+                "A list of gates to be spawned with attributes",
+                "Format: [<gate_id>, <gate_color>, <main_message>, <sub_message>, <gate_name>]",
+                "<gate_color>: the color for the light beam and text",
+                "<gate_name>: the name for waypoint's name when the gate is going to spawn",
+                "<main_message>/<sub_message>: result the prompt message like: <main_message> at: x y z, <sub_message>")
                 .defineList("gates", List.of(
                         List.of("pla:apotheosis_gate", "#FF4500", "A powerful force stirs… A Boss Gate will be opened", "Beyond lies an ancient being of immense power. Enter if you dare—but be ready to face your doom!", "Apotheosis Boss Gate"),
                         List.of("pla:apotheosis_gate", "#FF4500", "A powerful force stirs… A Boss Gate will be opened", "Beyond lies an ancient being of immense power. Enter if you dare—but be ready to face your doom!", "Apotheosis Boss Gate"),

@@ -21,7 +21,7 @@ modId="plagatesummon" #mandatory
 # see the associated build.gradle script for how to populate this completely automatically during a build
 version="${file.jarVersion}" #mandatory
  # A display name for the mod
-displayName="Pla Gate Summon" #mandatory
+displayName="Random Gateways Spawning" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
 #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
@@ -44,23 +44,58 @@ authors="PLa" #optional
 description='''
 Pla made this mod for randomly summon gates.
 '''
-# A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.examplemod]] #optional
-    # the modid of the dependency
-    modId="forge" #mandatory
-    # Does this dependency have to exist - if not, ordering below must be specified
-    mandatory=true #mandatory
-    # The version range of the dependency
-    versionRange="[40,)" #mandatory
-    # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
-    ordering="NONE"
-    # Side this dependency is applied on - BOTH, CLIENT or SERVER
-    side="BOTH"
-# Here's another dependency
-[[dependencies.examplemod]]
-    modId="minecraft"
-    mandatory=true
-# This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[1.18.2,1.19)"
-    ordering="NONE"
-    side="BOTH"
+[[dependencies.plagatesummon]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.18.2,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.plagatesummon]]
+modId="forge"
+mandatory=true
+versionRange="[40.2.21,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.plagatesummon]]
+modId="ftbchunks"
+mandatory=true
+versionRange="[1802.3.5,)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.plagatesummon]]
+modId="ftblibrary"
+mandatory=true
+versionRange="[1802.3.6,)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.plagatesummon]]
+modId="ftbteams"
+mandatory=true
+versionRange="[1802.2.6,)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.plagatesummon]]
+modId="ftbranks"
+mandatory=true
+versionRange="[1802.1.9,)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.plagatesummon]]
+modId="architectury"
+mandatory=true
+versionRange="[4.12.94,)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.plagatesummon]]
+modId="gateways"
+mandatory=true
+versionRange="[2.3.0,)"
+ordering="AFTER"
+side="BOTH"

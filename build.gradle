@@ -18,7 +18,7 @@ apply plugin: 'net.minecraftforge.gradle'
 
 version = '1.0'
 group = 'com.pla.plagatesummon' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'PlaGateSummon'
+archivesBaseName = 'RandomGatewaysSpawning'
 
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -149,7 +149,7 @@ dependencies {
     implementation fg.deobf("curse.maven:ftblibrary-404465:4396792")
     implementation fg.deobf("curse.maven:ftbteams-404468:4579981")
     implementation fg.deobf("curse.maven:ftbranks-314905:4167384")
-    implementation fg.deobf("curse.maven:architectury-419699:4521465")
+    implementation fg.deobf("curse.maven:architectury-419699:5137931")
 }
 
 // Example for how to get properties into the manifest for reading at runtime.

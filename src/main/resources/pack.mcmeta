@@ -1,6 +1,6 @@
 {
     "pack": {
-        "description": "Give player SDM money when killing any mob",
+        "description": "Randomly spawning gate from Gateways to Eternity mod",
         "pack_format": 9,
         "forge:resource_pack_format": 8,
         "forge:data_pack_format": 9
