@@ -20,13 +20,13 @@ public class PlaGateSummon
     public static final String MOD_ID = "plagatesummon";
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public PlaGateSummon() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+    public PlaGateSummon(FMLJavaModLoadingContext context) {
+        IEventBus modEventBus = context.getModEventBus();
         modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(DailyGateSpawner.class);
         MinecraftForge.EVENT_BUS.register(SleepPreventionHandler.class);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC, "plagatesummon-common.toml");
+        context.registerConfig(ModConfig.Type.COMMON, Config.SPEC, "plagatesummon-common.toml");
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

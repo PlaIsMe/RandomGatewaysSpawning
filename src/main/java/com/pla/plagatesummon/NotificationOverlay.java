@@ -3,7 +3,7 @@ package com.pla.plagatesummon;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -30,13 +30,13 @@ public class NotificationOverlay {
     }
 
     @SubscribeEvent
-    public static void onRenderNotificationOverlay(RenderGameOverlayEvent.Text event) {
+    public static void onRenderNotificationOverlay(RenderGuiOverlayEvent.Post event) {
         if (messageTimer <= 0) return; // No active message
 
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null) return;
 
-        PoseStack poseStack = event.getMatrixStack();
+        PoseStack poseStack = event.getPoseStack();
         Font font = mc.font;
 
         int screenWidth = mc.getWindow().getGuiScaledWidth();

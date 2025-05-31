@@ -47,55 +47,55 @@ Pla made this mod for randomly summon gates.
 [[dependencies.plagatesummon]]
 modId="minecraft"
 mandatory=true
-versionRange="[1.18.2,)"
+versionRange="[1.19.2,)"
 ordering="NONE"
 side="BOTH"
 
 [[dependencies.plagatesummon]]
 modId="forge"
 mandatory=true
-versionRange="[40.2.21,)"
+versionRange="[43.5.0,)"
 ordering="NONE"
 side="BOTH"
 
 [[dependencies.plagatesummon]]
 modId="ftbchunks"
 mandatory=true
-versionRange="[1802.3.5,)"
+versionRange="[1902.4.7,)"
 ordering="AFTER"
 side="BOTH"
 
 [[dependencies.plagatesummon]]
 modId="ftblibrary"
 mandatory=true
-versionRange="[1802.3.6,)"
+versionRange="[1902.4.1,)"
 ordering="AFTER"
 side="BOTH"
 
 [[dependencies.plagatesummon]]
 modId="ftbteams"
 mandatory=true
-versionRange="[1802.2.6,)"
+versionRange="[1902.2.14,)"
 ordering="AFTER"
 side="BOTH"
 
 [[dependencies.plagatesummon]]
 modId="ftbranks"
 mandatory=true
-versionRange="[1802.1.9,)"
+versionRange="[1902.1.16,)"
 ordering="AFTER"
 side="BOTH"
 
 [[dependencies.plagatesummon]]
 modId="architectury"
 mandatory=true
-versionRange="[4.12.94,)"
+versionRange="[6.6.92,)"
 ordering="AFTER"
 side="BOTH"
 
 [[dependencies.plagatesummon]]
 modId="gateways"
 mandatory=true
-versionRange="[2.3.0,)"
+versionRange="[3.2.3,)"
 ordering="AFTER"
 side="BOTH"

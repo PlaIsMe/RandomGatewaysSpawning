@@ -1,8 +1,10 @@
 package com.pla.plagatesummon;
 
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
@@ -14,6 +16,11 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 public class SleepPreventionHandler {
     @SubscribeEvent
     public static void onPlayerSleep(PlayerSleepInBedEvent event) {
+        Entity entity = event.getEntity();
+        if (!(entity instanceof Player player)) {
+            return;
+        }
+
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         if (server == null) return;
 
@@ -24,7 +31,10 @@ public class SleepPreventionHandler {
 
         if (data.spawnPos != null) {
             event.setResult(Player.BedSleepingProblem.OTHER_PROBLEM);
-            event.getPlayer().sendMessage(new TextComponent("A strange force prevents you from sleeping ..."), event.getPlayer().getUUID());
+            player.displayClientMessage(
+                    Component.literal("A strange force prevents you from sleeping ...").withStyle(ChatFormatting.RED),
+                    false
+            );
         }
     }
 }
