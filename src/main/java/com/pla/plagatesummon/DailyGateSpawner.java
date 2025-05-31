@@ -65,6 +65,7 @@ public class DailyGateSpawner {
 
         boolean debug_mode = Config.DEBUG_MODE.get();
         boolean auto_claim = Config.AUTO_CLAIM.get();
+        boolean auto_unclaim = Config.AUTO_UNCLAIM.get();
         if (randomPlayer == null) return;
 
         CommandSourceStack source = randomPlayer.createCommandSourceStack();
@@ -97,7 +98,7 @@ public class DailyGateSpawner {
                         data.spawnPos = SurfaceSpawnHelper.findRandomSurfacePos(world, randomPlayer.blockPosition(), 50, 300);
                         removeWaypoint(data.oldSpawnPos, data.waypointName, data.hexColor);
                         if (debug_mode) LOGGER.info("PlaGateSummon: Removed waypoint: {}", data.waypointName);
-                        if (auto_claim) {
+                        if (auto_unclaim) {
                             ClaimChunkHelper claimChunkHelper = ClaimChunkHelper.getInstance(server);
                             claimChunkHelper.unClaimChunk(source, randomPlayer);
                             if (debug_mode) LOGGER.info("PlaGateSummon: Un claiming chunk for gate {}", data.waypointName);
