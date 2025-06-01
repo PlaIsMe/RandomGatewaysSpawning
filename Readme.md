@@ -12,8 +12,6 @@ This mod depends on the following mods to function:
 - [FTB Chunks](https://www.curseforge.com/minecraft/mc-mods/ftb-chunks)
 - [FTB Library](https://www.curseforge.com/minecraft/mc-mods/ftb-library)
 - [FTB Teams](https://www.curseforge.com/minecraft/mc-mods/ftb-teams)
-- [FTB Ranks](https://www.curseforge.com/minecraft/mc-mods/ftb-ranks)
-- [Architectury API](https://www.curseforge.com/minecraft/mc-mods/architectury-api)
 - [Gateways to Eternity](https://www.curseforge.com/minecraft/mc-mods/gateways-to-eternity)
 
 > Optional:
@@ -48,7 +46,7 @@ This mod depends on the following mods to function:
 - This ensures the gate is kept active even if no players are nearby.
 
 ⚠️ **Warning:** In some cases, automatically force-loading chunks may cause temporary lag or game freezes on weaker servers.  
-If this happens, you can **disable** the option in the config:
+If this happens, you could **terminate the game and restart** or **disable** the option in the config:
 
 ```toml
 auto_claim = false

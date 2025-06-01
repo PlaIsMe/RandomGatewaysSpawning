@@ -5,8 +5,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
 
-import java.util.UUID;
-
 public class GateSpawnData extends SavedData {
     private static final String DATA_NAME = "gate_spawn_data";
 
