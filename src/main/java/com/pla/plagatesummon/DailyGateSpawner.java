@@ -9,8 +9,6 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.level.TicketType;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -23,8 +21,6 @@ import org.apache.logging.log4j.LogManager;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static com.pla.plagatesummon.WaypointHelper.createWaypoint;
 import static com.pla.plagatesummon.WaypointHelper.removeWaypoint;
