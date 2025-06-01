@@ -1,9 +1,10 @@
 package com.pla.plagatesummon;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import dev.ftb.mods.ftbchunks.data.ClaimedChunk;
-import dev.ftb.mods.ftbchunks.data.ClaimedChunkManager;
-import dev.ftb.mods.ftbchunks.data.FTBChunksTeamData;
+import dev.ftb.mods.ftbchunks.api.FTBChunksAPI;
+import dev.ftb.mods.ftbchunks.data.ClaimedChunkImpl;
+import dev.ftb.mods.ftbchunks.data.ChunkTeamDataImpl;
+import dev.ftb.mods.ftbchunks.data.ClaimedChunkManagerImpl;
 import dev.ftb.mods.ftblibrary.math.ChunkDimPos;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
@@ -15,31 +16,29 @@ import net.minecraft.world.level.Level;
 
 import java.util.Objects;
 
-import static dev.ftb.mods.ftbchunks.data.FTBChunksAPI.getManager;
-
 public class ClaimChunkHelper {
     private static ClaimChunkHelper instance;
-    private final ClaimedChunkManager claimedChunkManager;
+    private final ClaimedChunkManagerImpl claimedChunkManager;
 
-    public ClaimChunkHelper(ClaimedChunkManager claimedChunkManager) throws CommandSyntaxException {
+    public ClaimChunkHelper(ClaimedChunkManagerImpl claimedChunkManager) throws CommandSyntaxException {
         this.claimedChunkManager = claimedChunkManager;
     }
 
     public static synchronized ClaimChunkHelper getInstance(MinecraftServer server) throws CommandSyntaxException {
         if (instance == null) {
-            instance = new ClaimChunkHelper(getManager());
+            instance = new ClaimChunkHelper((ClaimedChunkManagerImpl) FTBChunksAPI.api().getManager());
         }
         return instance;
     }
 
     public void claimChunk(ServerPlayer player, BlockPos pos) throws CommandSyntaxException {
         ChunkPos chunkPos = new ChunkPos(pos);
-        ResourceKey<Level> dimension = player.level.dimension();
+        ResourceKey<Level> dimension = player.level().dimension();
         ChunkDimPos chunkDimPos = new ChunkDimPos(dimension, chunkPos.x, chunkPos.z);
 
-        FTBChunksTeamData teamData = claimedChunkManager.getData(player);
+        ChunkTeamDataImpl teamData = claimedChunkManager.getOrCreateData(player);
 
-        ClaimedChunk claimedChunk = new ClaimedChunk(teamData, chunkDimPos);
+        ClaimedChunkImpl claimedChunk = new ClaimedChunkImpl(teamData, chunkDimPos);
         claimedChunk.setClaimedTime(System.currentTimeMillis());
         claimedChunk.setForceLoadedTime(System.currentTimeMillis());
         claimedChunkManager.registerClaim(chunkDimPos, claimedChunk);
@@ -47,6 +46,7 @@ public class ClaimChunkHelper {
     }
 
     public void unClaimChunk(CommandSourceStack source, ServerPlayer pPlayer) {
+        // FIXME: Don't know how to unclaim a pos so let's unclaim everything
         String unclaimCommand = "ftbchunks admin unclaim_everything";
         try {
             Objects.requireNonNull(pPlayer.getServer()).getCommands().getDispatcher().execute(unclaimCommand, source);

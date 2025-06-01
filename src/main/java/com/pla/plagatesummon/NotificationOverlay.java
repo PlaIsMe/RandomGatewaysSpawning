@@ -1,8 +1,8 @@
 package com.pla.plagatesummon;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -36,7 +36,7 @@ public class NotificationOverlay {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null) return;
 
-        PoseStack poseStack = event.getPoseStack();
+        GuiGraphics guiGraphics = event.getGuiGraphics();
         Font font = mc.font;
 
         int screenWidth = mc.getWindow().getGuiScaledWidth();
@@ -44,6 +44,6 @@ public class NotificationOverlay {
         int x = (screenWidth - font.width(message)) / 2;
         int y = screenHeight - 60;
 
-        font.draw(poseStack, message, x, y, hexColor);
+        guiGraphics.drawString(font, message, x, y, hexColor);
     }
 }

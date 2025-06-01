@@ -2,6 +2,7 @@ package com.pla.plagatesummon;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -20,18 +21,22 @@ public class PlaGateSummon
     public static final String MOD_ID = "plagatesummon";
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public PlaGateSummon(FMLJavaModLoadingContext context) {
-        IEventBus modEventBus = context.getModEventBus();
+    public PlaGateSummon() {
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addListener(this::commonSetup);
-        MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(DailyGateSpawner.class);
-        MinecraftForge.EVENT_BUS.register(SleepPreventionHandler.class);
-        context.registerConfig(ModConfig.Type.COMMON, Config.SPEC, "plagatesummon-common.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC, "plagatesummon-common.toml");
+        MinecraftForge.EVENT_BUS.register(new DailyGateSpawner());
+        MinecraftForge.EVENT_BUS.register(new SleepPreventionHandler());
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
     }
 
+    // Add the example block item to the building blocks tab
+    private void addCreative(BuildCreativeModeTabContentsEvent event) {
+    }
+
+    // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
     }

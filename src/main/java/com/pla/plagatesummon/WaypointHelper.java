@@ -1,40 +1,46 @@
 package com.pla.plagatesummon;
 
 import dev.ftb.mods.ftbchunks.client.map.MapDimension;
-import dev.ftb.mods.ftbchunks.client.map.WaypointManager;
+import dev.ftb.mods.ftbchunks.client.map.WaypointImpl;
+import dev.ftb.mods.ftbchunks.client.map.WaypointManagerImpl;
+import dev.ftb.mods.ftbchunks.client.map.WaypointType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 
+import java.util.Optional;
+
 
 public class WaypointHelper {
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public static void createWaypoint(BlockPos pos, String name, int hexColor) {
-        MapDimension dimension = MapDimension.getCurrent();
-        assert dimension != null;
-        if (!dimension.dimension.equals(Level.OVERWORLD)) {
+        Optional<MapDimension> dimension = MapDimension.getCurrent();
+        assert dimension.isPresent();
+        if (!dimension.get().dimension.equals(Level.OVERWORLD)) {
             return;
         }
 
-        WaypointManager waypointManager = dimension.getWaypointManager();
-        CustomWaypoint waypoint = new CustomWaypoint(dimension, pos.getX(), pos.getY(), pos.getZ());
+        WaypointManagerImpl waypointManager = dimension.get().getWaypointManager();
+        WaypointImpl waypoint = new WaypointImpl(WaypointType.DEFAULT, dimension.get(), pos);
+        waypoint.refreshIcon();
         waypoint.setName(name);
         waypoint.setColor(hexColor);
         waypointManager.add(waypoint);
     }
 
     public static void removeWaypoint(BlockPos pos, String name, int hexColor) {
-        MapDimension dimension = MapDimension.getCurrent();
-        if (dimension == null || !dimension.dimension.equals(Level.OVERWORLD)) {
+        Optional<MapDimension> dimension = MapDimension.getCurrent();
+        assert dimension.isPresent();
+        if (!dimension.get().dimension.equals(Level.OVERWORLD)) {
             return;
         }
 
-        WaypointManager waypointManager = dimension.getWaypointManager();
+        WaypointManagerImpl waypointManager = dimension.get().getWaypointManager();
 
-        boolean removed = waypointManager.removeIf(waypoint -> waypoint.name.equals(name));
+        boolean removed = waypointManager.removeIf(waypoint -> waypoint.getName().equals(name));
         if (removed) {
             LOGGER.info("PlaGateSummon: Removed waypoint with name: {}, hexColor: {}", name, hexColor);
         } else {

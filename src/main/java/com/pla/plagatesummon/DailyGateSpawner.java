@@ -2,9 +2,7 @@ package com.pla.plagatesummon;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -54,7 +52,7 @@ public class DailyGateSpawner {
         GateSpawnData data = GateSpawnData.get(world);
 
         List<ServerPlayer> overworldPlayers = server.getPlayerList().getPlayers().stream()
-                .filter(player -> player.getLevel().dimension() == Level.OVERWORLD)
+                .filter(player -> player.level().dimension() == Level.OVERWORLD)
                 .toList();
         if (overworldPlayers.isEmpty()) return;
         ServerPlayer randomPlayer = overworldPlayers.get(random.nextInt(overworldPlayers.size()));

@@ -12,8 +12,6 @@ This mod depends on the following mods to function:
 - [FTB Chunks](https://www.curseforge.com/minecraft/mc-mods/ftb-chunks)
 - [FTB Library](https://www.curseforge.com/minecraft/mc-mods/ftb-library)
 - [FTB Teams](https://www.curseforge.com/minecraft/mc-mods/ftb-teams)
-- [FTB Ranks](https://www.curseforge.com/minecraft/mc-mods/ftb-ranks)
-- [Architectury API](https://www.curseforge.com/minecraft/mc-mods/architectury-api)
 - [Gateways to Eternity](https://www.curseforge.com/minecraft/mc-mods/gateways-to-eternity)
 
 > Optional:
