@@ -47,6 +47,7 @@ public class ClaimChunkHelper {
     }
 
     public void unClaimChunk(CommandSourceStack source, ServerPlayer pPlayer) {
+        // FIXME: Don't know how to unclaim a pos so let's unclaim everything
         String unclaimCommand = "ftbchunks admin unclaim_everything";
         try {
             Objects.requireNonNull(pPlayer.getServer()).getCommands().getDispatcher().execute(unclaimCommand, source);

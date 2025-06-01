@@ -21,6 +21,7 @@ public class WaypointHelper {
 
         WaypointManager waypointManager = dimension.getWaypointManager();
         CustomWaypoint waypoint = new CustomWaypoint(dimension, pos.getX(), pos.getY(), pos.getZ());
+        waypoint.update();
         waypoint.setName(name);
         waypoint.setColor(hexColor);
         waypointManager.add(waypoint);
