@@ -31,26 +31,22 @@ public class ClaimChunkHelper {
         return instance;
     }
 
-    public void claimChunk(ServerPlayer player, BlockPos pos) throws CommandSyntaxException {
+    public void claimChunk(CommandSourceStack source, ServerPlayer player, BlockPos pos) throws CommandSyntaxException {
         ChunkPos chunkPos = new ChunkPos(pos);
         ResourceKey<Level> dimension = player.level().dimension();
         ChunkDimPos chunkDimPos = new ChunkDimPos(dimension, chunkPos.x, chunkPos.z);
 
         ChunkTeamDataImpl teamData = claimedChunkManager.getOrCreateData(player);
-
-        ClaimedChunkImpl claimedChunk = new ClaimedChunkImpl(teamData, chunkDimPos);
-        claimedChunk.setClaimedTime(System.currentTimeMillis());
-        claimedChunk.setForceLoadedTime(System.currentTimeMillis());
-        claimedChunkManager.registerClaim(chunkDimPos, claimedChunk);
-        claimedChunk.sendUpdateToAll();
+        teamData.claim(source, chunkDimPos, false);
+        teamData.forceLoad(source, chunkDimPos, false);
     }
 
-    public void unClaimChunk(CommandSourceStack source, ServerPlayer pPlayer) {
-        // FIXME: Don't know how to unclaim a pos so let's unclaim everything
-        String unclaimCommand = "ftbchunks admin unclaim_everything";
-        try {
-            Objects.requireNonNull(pPlayer.getServer()).getCommands().getDispatcher().execute(unclaimCommand, source);
-        } catch (CommandSyntaxException e) {
-        }
+    public void unClaimChunk(CommandSourceStack source, ServerPlayer player, BlockPos pos) {
+        ChunkPos chunkPos = new ChunkPos(pos);
+        ResourceKey<Level> dimension = player.level().dimension();
+        ChunkDimPos chunkDimPos = new ChunkDimPos(dimension, chunkPos.x, chunkPos.z);
+
+        ChunkTeamDataImpl teamData = claimedChunkManager.getOrCreateData(player);
+        teamData.unclaim(source, chunkDimPos, false);
     }
 }

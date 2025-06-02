@@ -58,8 +58,6 @@ public class DailyGateSpawner {
         ServerPlayer randomPlayer = overworldPlayers.get(random.nextInt(overworldPlayers.size()));
 
         boolean debug_mode = Config.DEBUG_MODE.get();
-        boolean auto_claim = Config.AUTO_CLAIM.get();
-        boolean auto_unclaim = Config.AUTO_UNCLAIM.get();
         if (randomPlayer == null) return;
 
         CommandSourceStack source = randomPlayer.createCommandSourceStack();
@@ -92,9 +90,9 @@ public class DailyGateSpawner {
                         data.spawnPos = SurfaceSpawnHelper.findRandomSurfacePos(world, randomPlayer.blockPosition(), 50, 300);
                         removeWaypoint(data.oldSpawnPos, data.waypointName, data.hexColor);
                         if (debug_mode) LOGGER.info("PlaGateSummon: Removed waypoint: {}", data.waypointName);
-                        if (auto_unclaim) {
+                        if (data.oldSpawnPos != null) {
                             ClaimChunkHelper claimChunkHelper = ClaimChunkHelper.getInstance(server);
-                            claimChunkHelper.unClaimChunk(source, randomPlayer);
+                            claimChunkHelper.unClaimChunk(source, randomPlayer, data.oldSpawnPos);
                             if (debug_mode) LOGGER.info("PlaGateSummon: Un claiming chunk for gate {}", data.waypointName);
                         }
                         server.getPlayerList().broadcastSystemMessage(
@@ -103,6 +101,7 @@ public class DailyGateSpawner {
                                 false
                         );
                         if (debug_mode) LOGGER.info("PlaGateSummon: Random gate will be spawned today at " + data.nextSpawnTick + " x: " + data.spawnPos.getX() + " y: " + data.spawnPos.getY() + " z: " + data.spawnPos.getZ());
+                        data.oldSpawnPos = null;
                         data.setDirty();
                     } else {
                         data.shouldSpawnToday = false;
@@ -148,9 +147,6 @@ public class DailyGateSpawner {
                     LOGGER.error("Failed to execute command {}, error {}", clearWaypoint, e);
                 }
 
-                data.oldSpawnPos = null;
-                data.setDirty();
-
                 List<? extends List<? extends String>> gates = Config.GATES.get();
                 List<? extends String> randomGateData = gates.get(world.random.nextInt(gates.size()));
                 data.randomGate = randomGateData.get(0);
@@ -177,10 +173,8 @@ public class DailyGateSpawner {
                     LOGGER.error("Failed to execute command {}, error {}", addWaypoint, e);
                 }
 
-                if (auto_claim) {
-                    ClaimChunkHelper claimChunkHelper = ClaimChunkHelper.getInstance(server);
-                    claimChunkHelper.claimChunk(randomPlayer, data.spawnPos);
-                }
+                ClaimChunkHelper claimChunkHelper = ClaimChunkHelper.getInstance(server);
+                claimChunkHelper.claimChunk(source, randomPlayer, data.spawnPos);
 
                 data.isPromptPlayer = true;
                 data.setDirty();
