@@ -10,8 +10,6 @@ public class Config {
 
     public static ForgeConfigSpec.ConfigValue<List<? extends List<? extends String>>> GATES;
     public static ForgeConfigSpec.ConfigValue<Boolean> DEBUG_MODE;
-    public static ForgeConfigSpec.ConfigValue<Boolean> AUTO_CLAIM;
-    public static ForgeConfigSpec.ConfigValue<Boolean> AUTO_UNCLAIM;
 
     static {
         DEBUG_MODE = BUILDER.comment("Turn on debug mode").define("debug_mode", true);
