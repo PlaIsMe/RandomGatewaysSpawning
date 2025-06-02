@@ -15,8 +15,6 @@ public class Config {
 
     static {
         DEBUG_MODE = BUILDER.comment("Turn on debug mode").define("debug_mode", true);
-        AUTO_CLAIM = BUILDER.comment("Auto claiming chunk").define("auto_claim", true);
-        AUTO_UNCLAIM = BUILDER.comment("Auto un clamming chunk").define("auto_unclaim", true);
         GATES = BUILDER.comment(
                 "A list of gates to be spawned with attributes",
                 "Format: [<gate_id>, <gate_color>, <main_message>, <sub_message>, <gate_name>]",
