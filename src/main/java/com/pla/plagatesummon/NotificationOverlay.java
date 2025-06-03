@@ -3,12 +3,13 @@ package com.pla.plagatesummon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.RenderGuiEvent;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE, value = net.minecraftforge.api.distmarker.Dist.CLIENT)
+@EventBusSubscriber(modid = PlaGateSummon.MOD_ID, value = Dist.CLIENT)
 public class NotificationOverlay {
     private static final int MESSAGE_LIFETIME = 20;
     private static String message = "";
@@ -23,15 +24,15 @@ public class NotificationOverlay {
 
     // Reduce the timer on every client tick (20 ticks per second)
     @SubscribeEvent
-    public static void onClientTick(TickEvent.ClientTickEvent event) {
-        if (event.phase == TickEvent.Phase.START && messageTimer > 0) {
+    public static void onClientTick(ClientTickEvent.Pre event) {
+        if (messageTimer > 0) {
             messageTimer--;
         }
     }
 
     @SubscribeEvent
-    public static void onRenderNotificationOverlay(RenderGuiOverlayEvent.Post event) {
-        if (messageTimer <= 0) return; // No active message
+    public static void onRenderNotificationOverlay(RenderGuiEvent.Pre event) {
+        if (messageTimer <= 0) return;
 
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null) return;

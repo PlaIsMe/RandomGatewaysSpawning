@@ -8,11 +8,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.server.ServerLifecycleHooks;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
@@ -23,7 +22,7 @@ import java.util.Random;
 import static com.pla.plagatesummon.WaypointHelper.createWaypoint;
 import static com.pla.plagatesummon.WaypointHelper.removeWaypoint;
 
-@Mod.EventBusSubscriber(modid = PlaGateSummon.MOD_ID)
+@EventBusSubscriber(modid = PlaGateSummon.MOD_ID)
 public class DailyGateSpawner {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Random random = new Random();
@@ -40,11 +39,8 @@ public class DailyGateSpawner {
     }
 
     @SubscribeEvent
-    public static void onServerTick(TickEvent.ServerTickEvent event) throws CommandSyntaxException {
-        if (event.side != LogicalSide.SERVER || event.phase != TickEvent.Phase.START) return;
-
-        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-        if (server == null) return;
+    public static void onServerTick(ServerTickEvent.Pre event) throws CommandSyntaxException {
+        MinecraftServer server = event.getServer();
 
         ServerLevel world = server.getLevel(Level.OVERWORLD);
         if (world == null || !world.dimension().equals(Level.OVERWORLD)) return;

@@ -4,22 +4,18 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.server.ServerLifecycleHooks;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.player.CanPlayerSleepEvent;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
-@Mod.EventBusSubscriber(modid = PlaGateSummon.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@EventBusSubscriber(modid = PlaGateSummon.MOD_ID)
 public class SleepPreventionHandler {
     @SubscribeEvent
-    public static void onPlayerSleep(PlayerSleepInBedEvent event) {
-        Entity entity = event.getEntity();
-        if (!(entity instanceof Player player)) {
-            return;
-        }
+    public static void onCanPlayerSleep(CanPlayerSleepEvent event) {
+        Player entity = event.getEntity();
 
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         if (server == null) return;
@@ -30,8 +26,8 @@ public class SleepPreventionHandler {
         GateSpawnData data = GateSpawnData.get(world);
 
         if (data.spawnPos != null) {
-            event.setResult(Player.BedSleepingProblem.OTHER_PROBLEM);
-            player.displayClientMessage(
+            event.setProblem(Player.BedSleepingProblem.OTHER_PROBLEM);
+            entity.displayClientMessage(
                     Component.literal("A strange force prevents you from sleeping ...").withStyle(ChatFormatting.RED),
                     false
             );

@@ -1,8 +1,11 @@
 package com.pla.plagatesummon;
 
+import com.mojang.datafixers.DataFixer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.saveddata.SavedData;
 
 public class GateSpawnData extends SavedData {
@@ -21,7 +24,16 @@ public class GateSpawnData extends SavedData {
     public boolean skippedToday = false;
     public int spawnChance = 20;
 
-    public static GateSpawnData load(CompoundTag nbt) {
+    public GateSpawnData() {
+    }
+
+    public static final SavedData.Factory<GateSpawnData> FACTORY = new SavedData.Factory<>(
+            GateSpawnData::new,
+            GateSpawnData::load,
+            DataFixTypes.LEVEL
+    );
+
+    public static GateSpawnData load(CompoundTag nbt, HolderLookup.Provider provider) {
         GateSpawnData data = new GateSpawnData();
         data.nextSpawnTick = nbt.getInt("NextSpawnTick");
         data.shouldSpawnToday = nbt.getBoolean("ShouldSpawnToday");
@@ -57,7 +69,7 @@ public class GateSpawnData extends SavedData {
     }
 
     @Override
-    public CompoundTag save(CompoundTag nbt) {
+    public CompoundTag save(CompoundTag nbt, HolderLookup.Provider provider) {
         nbt.putInt("NextSpawnTick", nextSpawnTick);
         nbt.putBoolean("ShouldSpawnToday", shouldSpawnToday);
         if (spawnPos != null) {
@@ -78,6 +90,6 @@ public class GateSpawnData extends SavedData {
     }
 
     public static GateSpawnData get(ServerLevel world) {
-        return world.getDataStorage().computeIfAbsent(GateSpawnData::load, GateSpawnData::new, DATA_NAME);
+        return world.getDataStorage().computeIfAbsent(FACTORY, DATA_NAME);
     }
 }
