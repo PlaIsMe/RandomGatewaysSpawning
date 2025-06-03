@@ -39,32 +39,6 @@ This mod depends on the following mods to function:
 ---
 
 ## ⚙️ Config Options
-
-### 🔄 `auto_claim` (default: `true`)
-
-- When enabled, the mod automatically claims and force-loads the chunk where the gate spawns using **FTB Chunks**.
-- This ensures the gate is kept active even if no players are nearby.
-
-⚠️ **Warning:** In some cases, automatically force-loading chunks may cause temporary lag or game freezes on weaker servers.  
-If this happens, you could **terminate the game and restart** or **disable** the option in the config:
-
-```toml
-auto_claim = false
-```
-**But keep in mind:**
-
-If `auto_claim` is disabled, the spawned gate may unload if no players are nearby, which can cause problems with gate functionality or rendering.
-
-⚠️ **Caution: `auto_unclaim` Clears All Claimed Chunks**  
-By default, this mod clears *all* of your claimed chunks when unclaiming, because currently it does not support unclaiming a specific chunk only.
-
-If you want to prevent this, you can disable the automatic unclaiming in the config:
-
-```toml
-auto_unclaim = false
-```
-If you disable `auto_unclaim`, you must manually unclaim the spawned gate's chunk later if needed (using FTB Chunks UI or commands).
-
 🧪 **Debug Mode**  
 Disable `debug_mode` in the config to remove debug logs.
 
