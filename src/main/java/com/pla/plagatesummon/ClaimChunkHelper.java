@@ -1,10 +1,9 @@
 package com.pla.plagatesummon;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import dev.ftb.mods.ftbchunks.api.ChunkTeamData;
+import dev.ftb.mods.ftbchunks.api.ClaimedChunkManager;
 import dev.ftb.mods.ftbchunks.api.FTBChunksAPI;
-import dev.ftb.mods.ftbchunks.data.ClaimedChunkImpl;
-import dev.ftb.mods.ftbchunks.data.ChunkTeamDataImpl;
-import dev.ftb.mods.ftbchunks.data.ClaimedChunkManagerImpl;
 import dev.ftb.mods.ftblibrary.math.ChunkDimPos;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
@@ -14,19 +13,17 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 
-import java.util.Objects;
-
 public class ClaimChunkHelper {
     private static ClaimChunkHelper instance;
-    private final ClaimedChunkManagerImpl claimedChunkManager;
+    private final ClaimedChunkManager claimedChunkManager;
 
-    public ClaimChunkHelper(ClaimedChunkManagerImpl claimedChunkManager) throws CommandSyntaxException {
+    public ClaimChunkHelper(ClaimedChunkManager claimedChunkManager) throws CommandSyntaxException {
         this.claimedChunkManager = claimedChunkManager;
     }
 
-    public static synchronized ClaimChunkHelper getInstance(MinecraftServer server) throws CommandSyntaxException {
+    public static ClaimChunkHelper getInstance(MinecraftServer server) throws CommandSyntaxException {
         if (instance == null) {
-            instance = new ClaimChunkHelper((ClaimedChunkManagerImpl) FTBChunksAPI.api().getManager());
+            instance = new ClaimChunkHelper(FTBChunksAPI.api().getManager());
         }
         return instance;
     }
@@ -36,7 +33,7 @@ public class ClaimChunkHelper {
         ResourceKey<Level> dimension = player.level().dimension();
         ChunkDimPos chunkDimPos = new ChunkDimPos(dimension, chunkPos.x, chunkPos.z);
 
-        ChunkTeamDataImpl teamData = claimedChunkManager.getOrCreateData(player);
+        ChunkTeamData teamData = claimedChunkManager.getOrCreateData(player);
         teamData.claim(source, chunkDimPos, false);
         teamData.forceLoad(source, chunkDimPos, false);
     }
@@ -46,7 +43,7 @@ public class ClaimChunkHelper {
         ResourceKey<Level> dimension = player.level().dimension();
         ChunkDimPos chunkDimPos = new ChunkDimPos(dimension, chunkPos.x, chunkPos.z);
 
-        ChunkTeamDataImpl teamData = claimedChunkManager.getOrCreateData(player);
+        ChunkTeamData teamData = claimedChunkManager.getOrCreateData(player);
         teamData.unclaim(source, chunkDimPos, false);
     }
 }
