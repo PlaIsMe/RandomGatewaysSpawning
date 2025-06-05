@@ -18,8 +18,8 @@ public class WaypointHelper {
 
     public static void createWaypoint(BlockPos pos, String name, int hexColor) {
         Optional<MapDimension> dimension = MapDimension.getCurrent();
-        assert dimension.isPresent();
-        if (!dimension.get().dimension.equals(Level.OVERWORLD)) {
+        if (dimension.isEmpty()) {
+            LOGGER.warn("PlaGateSummon: No current map dimension available, createWaypoint will be skipped");
             return;
         }
 
@@ -34,7 +34,7 @@ public class WaypointHelper {
     public static void removeWaypoint(BlockPos pos, String name, int hexColor) {
         Optional<MapDimension> dimension = MapDimension.getCurrent();
         if (dimension.isEmpty()) {
-            LOGGER.warn("PlaGateSummon: No current map dimension available.");
+            LOGGER.warn("PlaGateSummon: No current map dimension available, removeWaypoint will be skipped");
             return;
         }
         if (!dimension.get().dimension.equals(Level.OVERWORLD)) {
