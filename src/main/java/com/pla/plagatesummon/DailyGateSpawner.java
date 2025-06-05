@@ -46,12 +46,7 @@ public class DailyGateSpawner {
         if (world == null || !world.dimension().equals(Level.OVERWORLD)) return;
 
         GateSpawnData data = GateSpawnData.get(world);
-
-        List<ServerPlayer> overworldPlayers = server.getPlayerList().getPlayers().stream()
-                .filter(player -> player.level().dimension() == Level.OVERWORLD)
-                .toList();
-        if (overworldPlayers.isEmpty()) return;
-        ServerPlayer randomPlayer = overworldPlayers.get(random.nextInt(overworldPlayers.size()));
+        ServerPlayer randomPlayer = world.getRandomPlayer();
 
         boolean debug_mode = Config.DEBUG_MODE.get();
         if (randomPlayer == null) return;
