@@ -1,7 +1,6 @@
 package com.pla.plagatesummon;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import dev.ftb.mods.ftbchunks.data.ClaimedChunk;
 import dev.ftb.mods.ftbchunks.data.ClaimedChunkManager;
 import dev.ftb.mods.ftbchunks.data.FTBChunksTeamData;
 import dev.ftb.mods.ftblibrary.math.ChunkDimPos;
@@ -13,8 +12,6 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 
-import java.util.Objects;
-
 import static dev.ftb.mods.ftbchunks.data.FTBChunksAPI.getManager;
 
 public class ClaimChunkHelper {
@@ -25,7 +22,7 @@ public class ClaimChunkHelper {
         this.claimedChunkManager = claimedChunkManager;
     }
 
-    public static synchronized ClaimChunkHelper getInstance(MinecraftServer server) throws CommandSyntaxException {
+    public static ClaimChunkHelper getInstance(MinecraftServer server) throws CommandSyntaxException {
         if (instance == null) {
             instance = new ClaimChunkHelper(getManager());
         }
