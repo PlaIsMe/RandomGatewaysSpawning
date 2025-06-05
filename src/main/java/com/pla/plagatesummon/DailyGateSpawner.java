@@ -79,9 +79,10 @@ public class DailyGateSpawner {
                         data.shouldSpawnToday = true;
                         data.nextSpawnTick = (120 + random.nextInt(2280)) * 10;
                         data.spawnPos = SurfaceSpawnHelper.findRandomSurfacePos(world, randomPlayer.blockPosition(), 50, 300);
-                        removeWaypoint(data.oldSpawnPos, data.waypointName, data.hexColor);
-                        if (debug_mode) LOGGER.info("PlaGateSummon: Removed waypoint: {}", data.waypointName);
                         if (data.oldSpawnPos != null) {
+                            removeWaypoint(data.oldSpawnPos, data.waypointName, data.hexColor);
+                            if (debug_mode) LOGGER.info("PlaGateSummon: Removed waypoint: {}", data.waypointName);
+
                             ClaimChunkHelper claimChunkHelper = ClaimChunkHelper.getInstance(server);
                             claimChunkHelper.unClaimChunk(source, randomPlayer, data.oldSpawnPos);
                             if (debug_mode) LOGGER.info("PlaGateSummon: Un claiming chunk for gate {}", data.waypointName);

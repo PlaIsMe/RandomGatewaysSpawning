@@ -33,7 +33,10 @@ public class WaypointHelper {
 
     public static void removeWaypoint(BlockPos pos, String name, int hexColor) {
         Optional<MapDimension> dimension = MapDimension.getCurrent();
-        assert dimension.isPresent();
+        if (dimension.isEmpty()) {
+            LOGGER.warn("PlaGateSummon: No current map dimension available.");
+            return;
+        }
         if (!dimension.get().dimension.equals(Level.OVERWORLD)) {
             return;
         }
