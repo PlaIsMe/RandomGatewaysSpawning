@@ -11,21 +11,18 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import static dev.ftb.mods.ftbchunks.data.FTBChunksAPI.getManager;
 
 public class ClaimChunkHelper {
     private static ClaimChunkHelper instance;
     private final ClaimedChunkManager claimedChunkManager;
-    private static final Logger LOGGER = LogManager.getLogger();
 
     public ClaimChunkHelper(ClaimedChunkManager claimedChunkManager) throws CommandSyntaxException {
         this.claimedChunkManager = claimedChunkManager;
     }
 
-    public static synchronized ClaimChunkHelper getInstance(MinecraftServer server) throws CommandSyntaxException {
+    public static ClaimChunkHelper getInstance(MinecraftServer server) throws CommandSyntaxException {
         if (instance == null) {
             instance = new ClaimChunkHelper(getManager());
         }
