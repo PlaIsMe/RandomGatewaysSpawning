@@ -14,7 +14,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 
 
-version = '2.1'
+version = '2.3'
 group = 'com.pla.plagatesummon' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'RandomGatewaysSpawning-1.18.2'
 
