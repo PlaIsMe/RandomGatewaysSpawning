@@ -5,6 +5,8 @@ import dev.ftb.mods.ftbchunks.api.ChunkTeamData;
 import dev.ftb.mods.ftbchunks.api.ClaimedChunkManager;
 import dev.ftb.mods.ftbchunks.api.FTBChunksAPI;
 import dev.ftb.mods.ftblibrary.math.ChunkDimPos;
+import dev.ftb.mods.ftbteams.api.FTBTeamsAPI;
+import dev.ftb.mods.ftbteams.api.Team;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
@@ -12,6 +14,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
+
+import java.util.Optional;
+import java.util.UUID;
 
 public class ClaimChunkHelper {
     private static ClaimChunkHelper instance;
@@ -38,12 +43,16 @@ public class ClaimChunkHelper {
         teamData.forceLoad(source, chunkDimPos, false);
     }
 
-    public void unClaimChunk(CommandSourceStack source, ServerPlayer player, BlockPos pos) {
+    public void unClaimChunk(CommandSourceStack source, ServerPlayer player, BlockPos pos, String unClaimUUID) {
         ChunkPos chunkPos = new ChunkPos(pos);
         ResourceKey<Level> dimension = player.level().dimension();
         ChunkDimPos chunkDimPos = new ChunkDimPos(dimension, chunkPos.x, chunkPos.z);
 
-        ChunkTeamData teamData = claimedChunkManager.getOrCreateData(player);
-        teamData.unclaim(source, chunkDimPos, false);
+        UUID uuid = (!unClaimUUID.isEmpty() ? UUID.fromString(unClaimUUID) : player.getUUID());
+        Optional<Team> ftbTeam = FTBTeamsAPI.api().getManager().getTeamForPlayerID(uuid);
+        ftbTeam.ifPresent(team -> {
+            ChunkTeamData teamData = claimedChunkManager.getOrCreateData(team);
+            teamData.unclaim(source, chunkDimPos, false);
+        });
     }
 }
