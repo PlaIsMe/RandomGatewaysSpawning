@@ -113,7 +113,7 @@ public class DailyGateSpawner {
                             prepareForSpawning(data, world, randomPlayer, server, source, debug_mode);
                         } else {
                             data.shouldSpawnToday = false;
-                            data.spawnChance += 20;
+                            data.spawnChance += Config.SPAWN_RATE.get();
                             data.setDirty();
                             if (debug_mode) LOGGER.info("PlaGateSummon: No gate will be spawned today");
                             return;
