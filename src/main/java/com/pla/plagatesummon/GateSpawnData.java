@@ -22,7 +22,9 @@ public class GateSpawnData extends SavedData {
     public String subMessage = "";
     public String waypointName = "";
     public boolean skippedToday = false;
-    public int spawnChance = 20;
+    public int spawnChance = Config.SPAWN_RATE.get();
+    public int dayPassed = 1;
+    public String unClaimUUID = "";
 
     public GateSpawnData() {
     }
@@ -65,6 +67,8 @@ public class GateSpawnData extends SavedData {
         data.waypointName = nbt.getString("WaypointName");
         data.skippedToday = nbt.getBoolean("SkippedToday");
         data.spawnChance = nbt.getInt("SpawnChance");
+        data.dayPassed = nbt.getInt("DayPassed");
+        data.unClaimUUID = nbt.getString("UnClaimUUID");
         return data;
     }
 
@@ -86,6 +90,8 @@ public class GateSpawnData extends SavedData {
         nbt.putString("WaypointName", waypointName);
         nbt.putBoolean("SkippedToday", skippedToday);
         nbt.putInt("SpawnChance", spawnChance);
+        nbt.putInt("DayPassed", dayPassed);
+        nbt.putString("UnClaimUUID", unClaimUUID);
         return nbt;
     }
 

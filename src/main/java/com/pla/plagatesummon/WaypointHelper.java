@@ -10,44 +10,38 @@ import net.minecraft.world.level.Level;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 
-import java.util.Optional;
-
-
 public class WaypointHelper {
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public static void createWaypoint(BlockPos pos, String name, int hexColor) {
-        Optional<MapDimension> dimension = MapDimension.getCurrent();
-        if (dimension.isEmpty()) {
-            LOGGER.warn("PlaGateSummon: No current map dimension available, createWaypoint will be skipped");
-            return;
-        }
+        MapDimension.getCurrent().ifPresent(mapDimension -> {
+            if (!mapDimension.dimension.equals(Level.OVERWORLD)) {
+                return;
+            }
 
-        WaypointManagerImpl waypointManager = dimension.get().getWaypointManager();
-        WaypointImpl waypoint = new WaypointImpl(WaypointType.DEFAULT, dimension.get(), pos);
-        waypoint.refreshIcon();
-        waypoint.setName(name);
-        waypoint.setColor(hexColor);
-        waypointManager.add(waypoint);
+            WaypointManagerImpl waypointManager = mapDimension.getWaypointManager();
+            WaypointImpl waypoint = new WaypointImpl(WaypointType.DEFAULT, mapDimension, pos);
+            waypoint.refreshIcon();
+            waypoint.setName(name);
+            waypoint.setColor(hexColor);
+            waypointManager.add(waypoint);
+        });
     }
 
     public static void removeWaypoint(BlockPos pos, String name, int hexColor) {
-        Optional<MapDimension> dimension = MapDimension.getCurrent();
-        if (dimension.isEmpty()) {
-            LOGGER.warn("PlaGateSummon: No current map dimension available, removeWaypoint will be skipped");
-            return;
-        }
-        if (!dimension.get().dimension.equals(Level.OVERWORLD)) {
-            return;
-        }
+        MapDimension.getCurrent().ifPresent(mapDimension -> {
+            if (!mapDimension.dimension.equals(Level.OVERWORLD)) {
+                return;
+            }
 
-        WaypointManagerImpl waypointManager = dimension.get().getWaypointManager();
+            WaypointManagerImpl waypointManager = mapDimension.getWaypointManager();
 
-        boolean removed = waypointManager.removeIf(waypoint -> waypoint.getName().equals(name));
-        if (removed) {
-            LOGGER.info("PlaGateSummon: Removed waypoint with name: {}, hexColor: {}", name, hexColor);
-        } else {
-            LOGGER.warn("PlaGateSummon: No matching waypoint found for name: {}, hexColor: {}", name, hexColor);
-        }
+            boolean removed = waypointManager.removeIf(waypoint -> waypoint.getName().equals(name));
+            if (removed) {
+                LOGGER.info("PlaGateSummon: Removed waypoint with name: {}, hexColor: {}", name, hexColor);
+            } else {
+                LOGGER.warn("PlaGateSummon: No matching waypoint found for name: {}, hexColor: {}", name, hexColor);
+            }
+        });
     }
 }
