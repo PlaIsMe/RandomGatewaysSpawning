@@ -18,7 +18,7 @@ public class WaypointHelper {
             LOGGER.warn("PlaGateSummon: No current map dimension available, createWaypoint will be skipped");
             return;
         }
-        if (dimension.dimension.equals(Level.OVERWORLD)) {
+        if (!dimension.dimension.equals(Level.OVERWORLD)) {
             return;
         }
 
