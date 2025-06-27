@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Specification-Title: examplemod
-Specification-Vendor: examplemodsareus
-Specification-Version: 1
-Implementation-Title: PlaGateSummon
-Implementation-Version: 2.4
-Implementation-Vendor: examplemodsareus
-Implementation-Timestamp: 2025-06-08T10:46:01+0700
-
