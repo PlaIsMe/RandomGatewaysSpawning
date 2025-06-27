@@ -1,0 +1,40 @@
+modLoader="javafml"
+loaderVersion="[40,)"
+license="All rights reserved"
+[[mods]]
+modId="plagatesummon"
+version="${file.jarVersion}"
+displayName="Random Gateways Spawning"
+logoFile="examplemod.png"
+credits="Thanks for this example mod goes to Java"
+authors="pla_is_me"
+description='''
+Pla made this mod for randomly summon gates.
+'''
+[[dependencies.plagatesummon]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.19.2,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.plagatesummon]]
+modId="forge"
+mandatory=true
+versionRange="[43.5.0,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.plagatesummon]]
+modId="ftbchunks"
+mandatory=true
+versionRange="[1902.4.7,)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.plagatesummon]]
+modId="gateways"
+mandatory=true
+versionRange="[3.2.3,)"
+ordering="AFTER"
+side="BOTH"

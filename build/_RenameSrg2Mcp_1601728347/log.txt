@@ -1,0 +1,12 @@
+Args: "--task", "SRG_TO_MCP", "--input", "C:\Users\Admin\.gradle\caches\modules-2\files-2.1\curse.maven\ftbteams-404468\3535953\1f37f10fcb5f02bd3217aeca02d496529629315d\ftbteams-404468-3535953.jar", "--output", "C:\Users\Admin\.gradle\caches\forge_gradle\deobf_dependencies\curse\maven\ftbteams-404468\3535953_mapped_official_1.16.5\ftbteams-404468-3535953_mapped_official_1.16.5.jar", "--mcp", "C:\Users\Admin\.gradle\caches\forge_gradle\mcp_repo\net\minecraft\mapping\1.16.5\mapping-1.16.5-mapping.zip", "--strip-signatures"
+Classpath: C:\Users\Admin\.gradle\caches\forge_gradle\maven_downloader\net\minecraftforge\installertools\1.1.10\installertools-1.1.10-fatjar.jar
+WorkDir: C:\Users\Admin\Documents\PlaGateSummon\build\_RenameSrg2Mcp_1601728347
+Main: net.minecraftforge.installertools.ConsoleTool
+====================================
+Task: SRG_TO_MCP
+Input:  C:\Users\Admin\.gradle\caches\modules-2\files-2.1\curse.maven\ftbteams-404468\3535953\1f37f10fcb5f02bd3217aeca02d496529629315d\ftbteams-404468-3535953.jar
+Output: C:\Users\Admin\.gradle\caches\forge_gradle\deobf_dependencies\curse\maven\ftbteams-404468\3535953_mapped_official_1.16.5\ftbteams-404468-3535953_mapped_official_1.16.5.jar
+MCP:    C:\Users\Admin\.gradle\caches\forge_gradle\mcp_repo\net\minecraft\mapping\1.16.5\mapping-1.16.5-mapping.zip
+Loading MCP Data
+Stripped Manifest of sha digests
+Process complete
