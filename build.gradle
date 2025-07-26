@@ -86,6 +86,8 @@ dependencies {
     implementation "curse.maven:ftbchunks-314906:6504893"
     implementation "curse.maven:ftblibrary-404465:6466106"
     implementation "curse.maven:ftbteams-404468:6119437"
+    implementation "curse.maven:gateways-to-eternity-417802:6751514"
+    implementation "curse.maven:placebo-283644:6751290"
 }
 
 

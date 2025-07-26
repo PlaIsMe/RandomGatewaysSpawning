@@ -1,6 +1,5 @@
 package com.pla.plagatesummon;
 
-import com.mojang.datafixers.DataFixer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -11,20 +10,21 @@ import net.minecraft.world.level.saveddata.SavedData;
 public class GateSpawnData extends SavedData {
     private static final String DATA_NAME = "gate_spawn_data";
 
+    // Data for spawning algorithm
     public int nextSpawnTick = -1;
     public boolean shouldSpawnToday = false;
     public BlockPos spawnPos = null;
-    public BlockPos oldSpawnPos = null;
-    public boolean isPromptPlayer = false;
-    public String mainMessage = "";
-    public int hexColor = 0;
     public String randomGate = "";
-    public String subMessage = "";
-    public String waypointName = "";
     public boolean skippedToday = false;
     public int spawnChance = Config.SPAWN_RATE.get();
     public int dayPassed = 1;
-    public String unClaimUUID = "";
+
+    // Data for rendering client side
+    public String mainMessage = "";
+    public int hexColor = 0;
+    public String subMessage = "";
+    public String waypointName = "";
+    public boolean isPromptPlayer = false;
 
     public GateSpawnData() {
     }
@@ -49,16 +49,6 @@ public class GateSpawnData extends SavedData {
         } else {
             data.spawnPos = null;
         }
-        if (nbt.contains("OldSpawnPos")) {
-            int[] pos = nbt.getIntArray("OldSpawnPos");
-            if (pos.length == 3) {
-                data.oldSpawnPos = new BlockPos(pos[0], pos[1], pos[2]);
-            } else {
-                data.oldSpawnPos = null;
-            }
-        } else {
-            data.oldSpawnPos = null;
-        }
         data.isPromptPlayer = nbt.getBoolean("IsPromptPlayer");
         data.mainMessage = nbt.getString("MainMessage");
         data.hexColor = nbt.getInt("HexColor");
@@ -68,7 +58,6 @@ public class GateSpawnData extends SavedData {
         data.skippedToday = nbt.getBoolean("SkippedToday");
         data.spawnChance = nbt.getInt("SpawnChance");
         data.dayPassed = nbt.getInt("DayPassed");
-        data.unClaimUUID = nbt.getString("UnClaimUUID");
         return data;
     }
 
@@ -79,9 +68,6 @@ public class GateSpawnData extends SavedData {
         if (spawnPos != null) {
             nbt.putIntArray("SpawnPos", new int[]{spawnPos.getX(), spawnPos.getY(), spawnPos.getZ()});
         }
-        if (oldSpawnPos != null) {
-            nbt.putIntArray("OldSpawnPos", new int[]{oldSpawnPos.getX(), oldSpawnPos.getY(), oldSpawnPos.getZ()});
-        }
         nbt.putBoolean("IsPromptPlayer", isPromptPlayer);
         nbt.putString("MainMessage", mainMessage);
         nbt.putInt("HexColor", hexColor);
@@ -91,7 +77,6 @@ public class GateSpawnData extends SavedData {
         nbt.putBoolean("SkippedToday", skippedToday);
         nbt.putInt("SpawnChance", spawnChance);
         nbt.putInt("DayPassed", dayPassed);
-        nbt.putString("UnClaimUUID", unClaimUUID);
         return nbt;
     }
 

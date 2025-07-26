@@ -28,20 +28,13 @@ public class WaypointHelper {
         });
     }
 
-    public static void removeWaypoint(BlockPos pos, String name, int hexColor) {
+    public static void removeWaypoint(String name) {
         MapDimension.getCurrent().ifPresent(mapDimension -> {
             if (!mapDimension.dimension.equals(Level.OVERWORLD)) {
                 return;
             }
-
             WaypointManagerImpl waypointManager = mapDimension.getWaypointManager();
-
-            boolean removed = waypointManager.removeIf(waypoint -> waypoint.getName().equals(name));
-            if (removed) {
-                LOGGER.info("PlaGateSummon: Removed waypoint with name: {}, hexColor: {}", name, hexColor);
-            } else {
-                LOGGER.warn("PlaGateSummon: No matching waypoint found for name: {}, hexColor: {}", name, hexColor);
-            }
+            waypointManager.removeIf(waypoint -> waypoint.getName().equals(name));
         });
     }
 }
