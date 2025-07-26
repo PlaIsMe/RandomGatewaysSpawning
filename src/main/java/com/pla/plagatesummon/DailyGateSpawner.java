@@ -77,7 +77,6 @@ public class DailyGateSpawner {
             world.addFreshEntity(entity);
             entity.getPersistentData().putIntArray("GateSpawnPos", new int[]{data.spawnPos.getX(), data.spawnPos.getY(), data.spawnPos.getZ()});
             entity.getPersistentData().putString("GateWaypointName", data.waypointName);
-            entity.getPersistentData().putString("UnClaimUUID", randomPlayer.getStringUUID());
             entity.onGateCreated();
         } catch (Exception e) {
             LOGGER.error("PlaGateSummon: Failed to spawn gateway: {}", gatewayId);
@@ -192,7 +191,7 @@ public class DailyGateSpawner {
                 try {
                     Objects.requireNonNull(randomPlayer.getServer()).getCommands().getDispatcher().execute(addWaypoint, source);
                 } catch (CommandSyntaxException e) {
-                    LOGGER.error("Failed to execute command {}, error {}", addWaypoint, e);
+                    LOGGER.warn("PlaGateSummon: (Journey Map Compat) Failed to execute command {}, error {}", addWaypoint, e);
                 }
 
                 data.isPromptPlayer = true;

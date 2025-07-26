@@ -34,11 +34,11 @@ public class GatewayEntityMixin {
                 if (tag.contains("CleanUpAction") && tag.contains("UnClaimUUID")) {
                     switch (tag.getString("CleanUpAction")) {
                         case "full":
-                            claimChunkHelper.unClaimChunk(DailyGateSpawner.source, DailyGateSpawner.randomPlayer, spawnPos, tag.getString("UnClaimUUID"));
-                            claimChunkHelper.unForceLoadChunk(DailyGateSpawner.source, DailyGateSpawner.randomPlayer, spawnPos, tag.getString("UnClaimUUID"));
+                            claimChunkHelper.unClaimChunk(DailyGateSpawner.source, spawnPos, tag.getUUID("UnClaimUUID"), gatewayEntity);
+                            claimChunkHelper.unForceLoadChunk(DailyGateSpawner.source, spawnPos, tag.getUUID("UnClaimUUID"), gatewayEntity);
                             break;
                         case "half":
-                            claimChunkHelper.unForceLoadChunk(DailyGateSpawner.source, DailyGateSpawner.randomPlayer, spawnPos, tag.getString("UnClaimUUID"));
+                            claimChunkHelper.unForceLoadChunk(DailyGateSpawner.source, spawnPos, tag.getUUID("UnClaimUUID"), gatewayEntity);
                             break;
                         default:
                             break;
@@ -54,7 +54,7 @@ public class GatewayEntityMixin {
         try {
             Objects.requireNonNull(DailyGateSpawner.randomPlayer.getServer()).getCommands().getDispatcher().execute(clearWaypoint, DailyGateSpawner.source);
         } catch (CommandSyntaxException e) {
-            LOGGER.error("PlaGateSummon: Failed to execute command {}, error {}", clearWaypoint, e);
+            LOGGER.warn("PlaGateSummon: (Journey Map Compat) Failed to execute command {}, error {}", clearWaypoint, e);
         }
     }
 
