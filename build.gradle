@@ -1,21 +1,14 @@
-buildscript {
-    repositories {
-        maven { url = 'https://maven.minecraftforge.net' }
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-    }
-}
 plugins {
     id 'eclipse'
+    id 'idea'
     id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'org.spongepowered.mixin' version '0.7.+'
 }
-apply plugin: 'net.minecraftforge.gradle'
 
 
-version = '2.4'
-group = 'com.pla.plagatesummon' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+version = '2.5'
+group = 'com.pla.plagatesummon'
 archivesBaseName = 'RandomGatewaysSpawning-1.18.2'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -86,11 +79,18 @@ repositories {
     }
 }
 
+mixin {
+    add sourceSets.main, 'plagatesummon.mixins.refmap.json'
+    config 'plagatesummon.mixins.json'
+}
+
 dependencies {
     minecraft 'net.minecraftforge:forge:1.18.2-40.2.21'
     implementation fg.deobf("curse.maven:ftbchunks-314906:5423717")
     implementation fg.deobf("curse.maven:ftblibrary-404465:4396792")
     implementation fg.deobf("curse.maven:ftbteams-404468:4579981")
+    implementation fg.deobf("curse.maven:gateways-to-eternity-417802:4548643")
+    implementation fg.deobf("curse.maven:placebo-283644:4500363")
 }
 
 jar {
