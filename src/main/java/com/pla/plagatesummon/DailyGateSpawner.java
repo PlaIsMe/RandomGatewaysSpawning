@@ -190,7 +190,7 @@ public class DailyGateSpawner {
                 try {
                     Objects.requireNonNull(randomPlayer.getServer()).getCommands().getDispatcher().execute(addWaypoint, source);
                 } catch (CommandSyntaxException e) {
-                    LOGGER.error("Failed to execute command {}, error {}", addWaypoint, e);
+                    LOGGER.warn("PlaGateSummon: (Journey Map Compat) Failed to execute command {}, error {}", addWaypoint, e);
                 }
 
                 data.isPromptPlayer = true;

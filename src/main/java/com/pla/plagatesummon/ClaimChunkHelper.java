@@ -1,10 +1,7 @@
 package com.pla.plagatesummon;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import dev.ftb.mods.ftbchunks.data.ClaimResult;
-import dev.ftb.mods.ftbchunks.data.ClaimResults;
-import dev.ftb.mods.ftbchunks.data.ClaimedChunkManager;
-import dev.ftb.mods.ftbchunks.data.FTBChunksTeamData;
+import dev.ftb.mods.ftbchunks.data.*;
 import dev.ftb.mods.ftblibrary.math.ChunkDimPos;
 import dev.ftb.mods.ftbteams.FTBTeamsAPI;
 import dev.ftb.mods.ftbteams.data.Team;
@@ -39,24 +36,22 @@ public class ClaimChunkHelper {
         return instance;
     }
 
-    public void unClaimChunk(CommandSourceStack source, ServerPlayer pPlayer, BlockPos pos, String unClaimUUID) {
+    public void unClaimChunk(CommandSourceStack source, BlockPos pos, UUID teamUUID, GatewayEntity gatewayEntity) {
         ChunkPos chunkPos = new ChunkPos(pos);
-        ResourceKey<Level> dimension = pPlayer.level.dimension();
+        ResourceKey<Level> dimension = gatewayEntity.level.dimension();
         ChunkDimPos chunkDimPos = new ChunkDimPos(dimension, chunkPos.x, chunkPos.z);
 
-        UUID uuid = (!unClaimUUID.isEmpty() ? UUID.fromString(unClaimUUID) : pPlayer.getUUID());
-        Team team = FTBTeamsAPI.getManager().getPlayerTeam(uuid);
+        Team team = FTBTeamsAPI.getManager().getPlayerTeam(teamUUID);
         FTBChunksTeamData teamData = claimedChunkManager.getData(team);
         teamData.unclaim(source, chunkDimPos, false);
     }
 
-    public void unForceLoadChunk(CommandSourceStack source, ServerPlayer pPlayer, BlockPos pos, String unClaimUUID) {
+    public void unForceLoadChunk(CommandSourceStack source, BlockPos pos, UUID teamUUID, GatewayEntity gatewayEntity) {
         ChunkPos chunkPos = new ChunkPos(pos);
-        ResourceKey<Level> dimension = pPlayer.level.dimension();
+        ResourceKey<Level> dimension = gatewayEntity.level.dimension();
         ChunkDimPos chunkDimPos = new ChunkDimPos(dimension, chunkPos.x, chunkPos.z);
 
-        UUID uuid = (!unClaimUUID.isEmpty() ? UUID.fromString(unClaimUUID) : pPlayer.getUUID());
-        Team team = FTBTeamsAPI.getManager().getPlayerTeam(uuid);
+        Team team = FTBTeamsAPI.getManager().getPlayerTeam(teamUUID);
         FTBChunksTeamData teamData = claimedChunkManager.getData(team);
         teamData.unload(source, chunkDimPos, false);
     }
@@ -70,9 +65,15 @@ public class ClaimChunkHelper {
         if (!teamData.claim(source, chunkDimPos, false).equals(ClaimResults.ALREADY_CLAIMED)) {
             teamData.load(source, chunkDimPos, false);
             gatewayEntity.getPersistentData().putString("CleanUpAction", "full");
+            gatewayEntity.getPersistentData().putUUID("UnClaimUUID", teamData.getTeamId());
         } else {
-            if (!teamData.load(source, chunkDimPos, false).equals(ClaimResults.ALREADY_LOADED)) {
-                gatewayEntity.getPersistentData().putString("CleanUpAction", "half");
+            ClaimedChunk chunk = claimedChunkManager.getChunk(chunkDimPos);
+            if (chunk != null) {
+                FTBChunksTeamData forceLoadTeam = chunk.getTeamData();
+                if (!forceLoadTeam.load(source, chunkDimPos, false).equals(ClaimResults.ALREADY_LOADED)) {
+                    gatewayEntity.getPersistentData().putString("CleanUpAction", "half");
+                    gatewayEntity.getPersistentData().putUUID("UnClaimUUID", forceLoadTeam.getTeamId());
+                }
             }
         }
     }
