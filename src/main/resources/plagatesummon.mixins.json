@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "com.pla.plagatesummon.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "plagatesummon.mixins.refmap.json",
+  "mixins": [
+    "GatewayEntityMixin"
+  ],
+  "client": [
+  ],
+  "minVersion": "0.8"
+}
