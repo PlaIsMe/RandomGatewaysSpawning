@@ -74,7 +74,6 @@ public class DailyGateSpawner {
             world.addFreshEntity(entity);
             entity.getPersistentData().putIntArray("GateSpawnPos", new int[]{data.spawnPos.getX(), data.spawnPos.getY(), data.spawnPos.getZ()});
             entity.getPersistentData().putString("GateWaypointName", data.waypointName);
-            entity.getPersistentData().putString("UnClaimUUID", randomPlayer.getStringUUID());
             entity.onGateCreated();
         } catch (Exception e) {
             LOGGER.error("PlaGateSummon: Failed to spawn gateway: {}", gatewayId);

@@ -41,7 +41,7 @@ public class ClaimChunkHelper {
         ResourceKey<Level> dimension = gatewayEntity.level.dimension();
         ChunkDimPos chunkDimPos = new ChunkDimPos(dimension, chunkPos.x, chunkPos.z);
 
-        Team team = FTBTeamsAPI.getManager().getPlayerTeam(teamUUID);
+        Team team = FTBTeamsAPI.getManager().getTeamByID(teamUUID);
         FTBChunksTeamData teamData = claimedChunkManager.getData(team);
         teamData.unclaim(source, chunkDimPos, false);
     }
@@ -51,7 +51,7 @@ public class ClaimChunkHelper {
         ResourceKey<Level> dimension = gatewayEntity.level.dimension();
         ChunkDimPos chunkDimPos = new ChunkDimPos(dimension, chunkPos.x, chunkPos.z);
 
-        Team team = FTBTeamsAPI.getManager().getPlayerTeam(teamUUID);
+        Team team = FTBTeamsAPI.getManager().getTeamByID(teamUUID);
         FTBChunksTeamData teamData = claimedChunkManager.getData(team);
         teamData.unload(source, chunkDimPos, false);
     }
