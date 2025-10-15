@@ -2,8 +2,6 @@ package com.pla.plagatesummon;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -27,7 +25,7 @@ public class PlaGateSummon
     public PlaGateSummon(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::addCreative);
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC, "random_gateway_spawning-server.toml");
 
         NeoForge.EVENT_BUS.register(DailyGateSpawner.class);
         NeoForge.EVENT_BUS.register(SleepPreventionHandler.class);

@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -199,7 +200,12 @@ public class DailyGateSpawner {
                     data.setDirty();
                 }
             }
-            NotificationOverlay.showNotification(data.mainMessage + " at x: " + data.spawnPos.getX() + " z: " + data.spawnPos.getZ() + " in " + (remainingTick / 20) + " seconds! " + data.subMessage, data.hexColor);
+            List<ServerPlayer> players = world.players();
+            for (Player player : players) {
+                if (!player.level().isClientSide()) {
+                    player.displayClientMessage(Component.literal(data.mainMessage + " at x: " + data.spawnPos.getX() + " z: " + data.spawnPos.getZ() + " in " + (remainingTick / 20) + " seconds! " + data.subMessage), true);
+                }
+            }
         }
     }
 }
