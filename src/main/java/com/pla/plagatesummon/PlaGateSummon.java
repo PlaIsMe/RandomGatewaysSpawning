@@ -24,7 +24,7 @@ public class PlaGateSummon
     public PlaGateSummon() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addListener(this::commonSetup);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC, "plagatesummon-common.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC, "random_gateway_spawning-server.toml");
         MinecraftForge.EVENT_BUS.register(new DailyGateSpawner());
         MinecraftForge.EVENT_BUS.register(new SleepPreventionHandler());
     }

@@ -204,7 +204,12 @@ public class DailyGateSpawner {
                     data.setDirty();
                 }
             }
-            NotificationOverlay.showNotification(data.mainMessage + " at x: " + data.spawnPos.getX() + " z: " + data.spawnPos.getZ() + " in " + (remainingTick / 20) + " seconds! " + data.subMessage, data.hexColor);
+            List<ServerPlayer> players = world.players();
+            for (Player player : players) {
+                if (!player.level().isClientSide()) {
+                    player.displayClientMessage(Component.literal(data.mainMessage + " at x: " + data.spawnPos.getX() + " z: " + data.spawnPos.getZ() + " in " + (remainingTick / 20) + " seconds! " + data.subMessage), true);
+                }
+            }
         }
     }
 }
