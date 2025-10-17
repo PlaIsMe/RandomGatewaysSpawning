@@ -9,6 +9,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -59,6 +61,23 @@ public class DailyGateSpawner {
         );
         if (debug_mode) LOGGER.info("PlaGateSummon: Random gate will be spawned today at " + data.nextSpawnTick + " x: " + data.spawnPos.getX() + " y: " + data.spawnPos.getY() + " z: " + data.spawnPos.getZ());
         data.setDirty();
+    }
+
+    static GatewayEntity getGateway(ServerLevel world, String gatewayId) {
+        try {
+            String[] parts = gatewayId.split(":");
+            ResourceLocation type = ResourceLocation.fromNamespaceAndPath(parts[0], parts[1]);
+            DynamicHolder<Gateway> holder = GatewayRegistry.INSTANCE.holder(type);
+            if (!holder.isBound()) {
+                LOGGER.error("PlaGateSummon: Unknown Gateway: {}", gatewayId);
+            }
+
+            Gateway gateway = holder.get();
+            return gateway.createEntity(world, randomPlayer);
+        } catch (Exception e) {
+            LOGGER.error("PlaGateSummon: Failed to get gateway id: {}", gatewayId);
+        }
+        return null;
     }
 
     static void spawnGateway(ServerLevel world, BlockPos pos, String gatewayId, GateSpawnData data) {
@@ -164,22 +183,15 @@ public class DailyGateSpawner {
             resetValue(data, true);
         } else if (remainingTick <= 6000) {
             if (!data.isPromptPlayer) {
-                List<? extends List<? extends String>> gates = Config.GATES.get();
-                List<? extends String> randomGateData = gates.get(world.random.nextInt(gates.size()));
-                data.randomGate = randomGateData.get(0);
-                data.hexColor = (0xFF << 24) | Integer.parseInt(randomGateData.get(1).substring(1), 16);
-                if (randomGateData.get(2).length() == 0) {
-                    data.mainMessage = "A " + randomGateData.get(4) + " is going to spawn";
-                } else {
-                    data.mainMessage = randomGateData.get(2);
-                }
-                if (randomGateData.get(3).length() == 0) {
-                    data.subMessage = "Be ready to fight!";
-                } else {
-                    data.subMessage = randomGateData.get(3);
-                }
-
-                data.waypointName = randomGateData.get(4);
+                List<? extends String> gates = Config.GATES.get();
+                String randomGateId = gates.get(world.random.nextInt(gates.size()));
+                GatewayEntity gatewayEntity = getGateway(world, randomGateId);
+                if (gatewayEntity == null) return;
+                data.randomGate = randomGateId;
+                data.hexColor = 0xFF000000 | gatewayEntity.getGateway().color().getValue() & 0xFFFFFF;
+                data.mainMessage = "A " + gatewayEntity.getDisplayName().getString() + " is going to spawn";
+                data.subMessage = "Be ready to fight!";
+                data.waypointName = gatewayEntity.getDisplayName().getString();
                 data.setDirty();
 
                 createWaypoint(data.spawnPos, data.waypointName, data.hexColor);
@@ -203,7 +215,10 @@ public class DailyGateSpawner {
             List<ServerPlayer> players = world.players();
             for (Player player : players) {
                 if (!player.level().isClientSide()) {
-                    player.displayClientMessage(Component.literal(data.mainMessage + " at x: " + data.spawnPos.getX() + " z: " + data.spawnPos.getZ() + " in " + (remainingTick / 20) + " seconds! " + data.subMessage), true);
+                    player.displayClientMessage(Component.literal(
+                            data.mainMessage + " at x: " + data.spawnPos.getX() + " z: " + data.spawnPos.getZ() +
+                                    " in " + (remainingTick / 20) + " seconds! " + data.subMessage)
+                            .withStyle(Style.EMPTY.withColor(TextColor.fromRgb(data.hexColor & 0xFFFFFF))), true);
                 }
             }
         }
