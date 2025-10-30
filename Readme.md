@@ -1,46 +1,42 @@
-# 🌌 Gateway to Eternity - Random Gate Spawning
+# Random Gateway Spawning
 
-This mod adds **random spawning mechanics** for gates from the [Gateways to Eternity](https://www.curseforge.com/minecraft/mc-mods/gateways-to-eternity) mod.  
-It is designed to add suspense and excitement by making powerful gateways appear unexpectedly during gameplay.
+<p align="center">
+  <a href="https://www.youtube.com/@pla_is_me" title="YouTube">
+    <img src="https://res.cloudinary.com/dxehc2hn3/image/upload/v1761811663/youtube_icon_bcbanf.png" alt="YouTube" width="80" height="80">
+  </a>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://discord.com/invite/EsvPsnqJpz" title="Discord">
+    <img src="https://res.cloudinary.com/dxehc2hn3/image/upload/v1761811736/discord_icon_bg_rp4omx.png" alt="Discord" width="80" height="80">
+  </a>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://ko-fi.com/pla_is_me" title="Ko‑fi">
+    <img src="https://res.cloudinary.com/dxehc2hn3/image/upload/v1761815764/kofi_icon_bg_sy3foi.png" alt="Ko‑fi" width="80" height="80">
+  </a>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://www.curseforge.com/minecraft/mc-mods/gateway-to-eternity-random-gate-spawning" title="curseforge">
+    <img src="https://res.cloudinary.com/dxehc2hn3/image/upload/v1761811729/cruseforge_icon_bg_gucfxc.png" alt="Curseforge" width="80" height="80">
+  </a>
+</p>
 
----
+## License & Use
+We reserve all rights. The points below outline what you can, cannot and must do when dealing with the
+contents of this repository.
 
-## 🧱 Requirements
+### You CAN
+* Use this mod in a modpack.
+* Make videos and showcases about this mod.
+* Write your own code that uses this code as a dependency (such as addons or datapacks).
 
-This mod depends on the following mods to function:
+### You CANNOT
+* Use or redistribute ANY assets of this mod, even for personal use.
 
-- [FTB Chunks](https://www.curseforge.com/minecraft/mc-mods/ftb-chunks)
-- [FTB Library](https://www.curseforge.com/minecraft/mc-mods/ftb-library)
-- [FTB Teams](https://www.curseforge.com/minecraft/mc-mods/ftb-teams)
-- [Gateways to Eternity](https://www.curseforge.com/minecraft/mc-mods/gateways-to-eternity)
-
-> Optional:
-- [JourneyMap](https://www.curseforge.com/minecraft/mc-mods/journeymap) – adds automatic waypoints for spawned gates
-
----
-
-## ⚙️ How It Works
-
-- Every **Minecraft day at sunrise** (`time == 0`), the mod evaluates whether to spawn a gateway.
-- The mod selects a **random player in the Overworld** and obtains their current position.
-- From the player's position, the mod randomly chooses a **surface block** between **50 to 300 blocks away** as the potential spawn location for the gate.
-- The actual spawning happens at a **random time during the day**, not necessarily exactly at sunrise.
-- The **spawn chance increases** gradually with each missed attempt:
-    - 20% → 40% → 60% → 80%
-    - After a successful spawn, the chance resets to 20%.
-- Once a gate has spawned:
-    - It **prevents another spawn the next day** to avoid over-spawning.
-- A **notification** is shown when a gate is about to appear.
-- If **JourneyMap** is installed:
-    - A **waypoint** is automatically created at the gate's location.
-- A **beam of light** marks the spawn position using **FTB Map**.
-- The chunk where the gate spawns is **force-loaded** using **FTB Chunks**, ensuring proper gate generation.
-
----
-
-## ⚙️ Config Options
-🧪 **Debug Mode**  
-Disable `debug_mode` in the config to remove debug logs.
-
-💬 **Notes**  
-It does **not** modify the Gateways to Eternity mod itself — only adds random spawning behavior externally.
+### Disclaimer
+<sub> 
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</sub>
