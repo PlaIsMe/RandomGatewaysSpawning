@@ -6,6 +6,7 @@ import com.pla.plagatesummon.DailyGateSpawner;
 import dev.shadowsoffire.gateways.entity.GatewayEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,10 +52,12 @@ public class GatewayEntityMixin {
         }
         removeWaypoint(tag.getString("GateWaypointName"));
         String clearWaypoint = "waypoint delete \"" + tag.getString("GateWaypointName") + "\" @a";
-        try {
-            Objects.requireNonNull(DailyGateSpawner.randomPlayer.getServer()).getCommands().getDispatcher().execute(clearWaypoint, DailyGateSpawner.source);
-        } catch (CommandSyntaxException e) {
-            LOGGER.warn("PlaGateSummon: (Journey Map Compat) Failed to execute command {}, error {}", clearWaypoint, e);
+        if (gatewayEntity.level() instanceof ServerLevel serverLevel) {
+            try {
+                Objects.requireNonNull(DailyGateSpawner.getRandomPlayer(serverLevel).getServer()).getCommands().getDispatcher().execute(clearWaypoint, DailyGateSpawner.source);
+            } catch (CommandSyntaxException e) {
+                LOGGER.warn("PlaGateSummon: (Journey Map Compat) Failed to execute command {}, error {}", clearWaypoint, e);
+            }
         }
     }
 
@@ -66,11 +69,13 @@ public class GatewayEntityMixin {
             int[] posArr = tag.getIntArray("GateSpawnPos");
             BlockPos spawnPos = new BlockPos(posArr[0], posArr[1], posArr[2]);
             ClaimChunkHelper claimChunkHelper;
-            try {
-                claimChunkHelper = ClaimChunkHelper.getInstance(self.getServer());
-                claimChunkHelper.processClaim(DailyGateSpawner.source, DailyGateSpawner.randomPlayer, spawnPos, self);
-            } catch (CommandSyntaxException e) {
-                LOGGER.error("PlaGateSummon: Failed to claim chunk on spawn");
+            if (self.level() instanceof ServerLevel serverLevel) {
+                try {
+                    claimChunkHelper = ClaimChunkHelper.getInstance(self.getServer());
+                    claimChunkHelper.processClaim(DailyGateSpawner.source, DailyGateSpawner.getRandomPlayer(serverLevel), spawnPos, self);
+                } catch (CommandSyntaxException e) {
+                    LOGGER.error("PlaGateSummon: Failed to claim chunk on spawn");
+                }
             }
         }
     }

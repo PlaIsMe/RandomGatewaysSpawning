@@ -39,6 +39,13 @@ public class DailyGateSpawner {
     public static ServerPlayer randomPlayer = null;
     public static CommandSourceStack source = null;
 
+    public static ServerPlayer getRandomPlayer(ServerLevel serverLevel) {
+        if (randomPlayer == null) {
+            randomPlayer = serverLevel.getRandomPlayer();
+        }
+        return randomPlayer;
+    }
+
     static void resetValue(GateSpawnData data, boolean skippedDay) {
         data.shouldSpawnToday = false;
         data.nextSpawnTick = -1;
